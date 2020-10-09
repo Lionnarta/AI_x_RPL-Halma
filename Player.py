@@ -9,9 +9,9 @@ class Player:
     Terdiri dari pion-pion dalam board
     """
 
-    def __init__(self):
+    def __init__(self, noPlayer):
         self.noPlayer = noPlayer
-        self.arrayPion = {}
+        self.arrayPion = []
 
         def addPion(Pion):
             # masukan harus tipe bentukan Pion

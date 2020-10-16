@@ -18,16 +18,18 @@ icon = pygame.image.load(os.path.join(
     os.path.dirname(os.getcwd()), "img", "icon", "halma.png"))
 pygame.display.set_icon(icon)
 
+# Getter width and height
 width = screen.get_width()
 height = screen.get_height()
 
-
+# Procedure to start menu
 def start():
     # Button setup
     text_color = (255, 255, 255)
     button_light = (32, 32, 32)
     button_dark = (160, 160, 160)
     text_font = pygame.font.SysFont('Arial', 20)
+
     text_one = text_font.render('8x8', True, text_color)
     text_two = text_font.render('10x10', True, text_color)
     text_three = text_font.render('16x16', True, text_color)
@@ -44,7 +46,7 @@ def start():
         button_2 = pygame.Rect(width/2-50, height/2+30, 100, 25)
         button_3 = pygame.Rect(width/2-50, height/2+60, 100, 25)
 
-        # mouse coordinates
+        # Getter mouse coordinates -> Tuple X, Y
         mouse = pygame.mouse.get_pos()
 
         # Button event

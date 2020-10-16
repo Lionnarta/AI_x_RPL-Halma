@@ -39,10 +39,10 @@ class Board:
     def setAllPionPosition(self, Player1, Player2):
         for pion in Player1.arrayPion:
             self.cell[pion.currentPosition.x][pion.currentPosition.y].setOwner(
-                1)
+                Player1.noPlayer)
         for pion in Player2.arrayPion:
             self.cell[pion.currentPosition.x][pion.currentPosition.y].setOwner(
-                2)
+                Player2.noPlayer)
 
 
 if __name__ == "__main__":

@@ -6,10 +6,9 @@ class Pion:
     class untuk tiap pion yang ada
     pionId = identifikasi untuk memudahkan nanti dalam menggerakkan pion
     """
-    def __init__(self, pionOwner, currentPosition, startPosition):
+    def __init__(self, pionOwner, currentPosition):
         self.pionOwner = pionOwner
         self.currentPosition = currentPosition
-        self.startPosition = startPosition
 
     def move(self, posisi, board):
         # Nanti diganti dengan fungsi validasi

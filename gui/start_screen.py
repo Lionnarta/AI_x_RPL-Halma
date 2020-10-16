@@ -14,8 +14,7 @@ screen = pygame.display.set_mode((1024, 768))
 pygame.display.set_caption("Halma")
 
 # Icon
-icon = pygame.image.load(os.path.join(
-    os.path.dirname(os.getcwd()), "img", "icon", "halma.png"))
+icon = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "icon", "halma.png"))
 pygame.display.set_icon(icon)
 
 # Getter width and height

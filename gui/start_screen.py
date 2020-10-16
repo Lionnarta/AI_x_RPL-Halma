@@ -48,7 +48,7 @@ def start():
 
         # Getter mouse coordinates -> Tuple X, Y
         mouse = pygame.mouse.get_pos()
-
+        
         # Button event
         if button_1.collidepoint(mouse[0], mouse[1]):
             if click:

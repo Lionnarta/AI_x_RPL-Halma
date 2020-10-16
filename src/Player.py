@@ -25,11 +25,6 @@ class Player:
             pion.printPion()
 
     def movePion(self, pionId, posisi, board):
-        # masukkan harus berupa tipe bentukkan posisi
-        # for pion in self.arrayPion:
-        #     if pion.pionId == pionId:
-        #         pion.currentPosition = posisi
-        #         break
         self.arrayPion[pionId].move(posisi, board)
 
     def setPlayerOne(self, boardSize):
@@ -38,9 +33,7 @@ class Player:
         for i in range(mid):
             for j in range(mid):
                 if (i + j < mid):
-                    self.addPion(
-                        Pion.Pion(pionOwner, Posisi.Posisi(i, j),
-                                  Posisi.Posisi(i, j)))
+                    self.addPion(Pion.Pion(pionOwner, Posisi.Posisi(i, j)))
 
     def setPlayerTwo(self, boardSize):
         mid = int(boardSize / 2)
@@ -50,6 +43,4 @@ class Player:
                 temp = i - j
                 x = i
                 y = boardSize - 1 - temp
-                self.addPion(
-                    Pion.Pion(pionOwner, Posisi.Posisi(x, y),
-                              Posisi.Posisi(x, y)))
+                self.addPion(Pion.Pion(pionOwner, Posisi.Posisi(x, y)))

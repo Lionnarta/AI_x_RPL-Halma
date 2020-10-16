@@ -31,6 +31,7 @@ class GameManager:
 if __name__ == "__main__":
     GM = GameManager()
     GM.printInfo()
+    print(GM.currentPlayer.listAllPossibleMove(14, GM.board))
     print("=====================================================")
     GM.currentPlayer.movePion(14, Posisi.Posisi(4, 1), GM.board)
     GM.printInfo()
@@ -38,3 +39,4 @@ if __name__ == "__main__":
     GM.currentPlayer.movePion(14, Posisi.Posisi(4, 2), GM.board)
     GM.printInfo()
     print("=====================================================")
+    print(GM.currentPlayer.listAllPossibleMove(11, GM.board))

@@ -7,10 +7,9 @@ class Pion:
     pionId = identifikasi untuk memudahkan nanti dalam menggerakkan pion
     """
 
-    def __init__(self, pionOwner, currentPosition, startPosition):
+    def __init__(self, pionOwner, currentPosition):
         self.pionOwner = pionOwner
         self.currentPosition = currentPosition
-        self.startPosition = startPosition
 
     def move(self, posisi, board):
         # Nanti diganti dengan fungsi validasi
@@ -26,13 +25,13 @@ class Pion:
 
     def isValidMove(self, posisi, board):
         # Posisi out of range
-        if self.isOutRange(posisi,board):
+        if self.isOutRange(posisi, board):
             return False
         # Posisi diisi pion lain
-        if self.isThisHaveOwner(posisi,board):
+        if self.isThisHaveOwner(posisi, board):
             return False
         return True
-    
+
     def isOutRange(self, posisi, board):
         if posisi.x < 0 or posisi.x >= board.size or posisi.y < 0 or posisi.y >= board.size:
             return True

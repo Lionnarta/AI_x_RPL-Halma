@@ -3,23 +3,18 @@ import Pion
 import Posisi
 import Board
 import Cell
+import Minimax
 
 boardSize = 10
 
 
 class GameManager:
-    def __init__(self):
+    def __init__(self, boardSize):
         self.currentPlayer = Player.Player(1, boardSize)
         self.oppositePlayer = Player.Player(2, boardSize)
         self.board = Board.Board(boardSize)
 
     def printInfo(self):
-        if self.currentPlayer.noPlayer == 1:
-            self.board.setAllPionPosition(self.currentPlayer,
-                                          self.oppositePlayer)
-        else:
-            self.board.setAllPionPosition(self.oppositePlayer,
-                                          self.currentPlayer)
         self.board.printBoard()
 
     def nextTurn(self):
@@ -29,14 +24,21 @@ class GameManager:
 
 
 if __name__ == "__main__":
-    GM = GameManager()
-    GM.printInfo()
-    print(GM.currentPlayer.listAllPossibleMove(14, GM.board))
+    boardSize = 8
+    GM = GameManager(boardSize)
+    GM.board.setAllPionPosition(GM.currentPlayer, GM.oppositePlayer)
+    # GM.printInfo()
     print("=====================================================")
-    GM.currentPlayer.movePion(14, Posisi.Posisi(4, 1), GM.board)
-    GM.printInfo()
-    print("=====================================================")
-    GM.currentPlayer.movePion(14, Posisi.Posisi(4, 2), GM.board)
+    GM.currentPlayer.movePion(9, Posisi.Posisi(3, 1), GM.board)
     GM.printInfo()
     print("=====================================================")
-    print(GM.currentPlayer.listAllPossibleMove(11, GM.board))
+    GM.currentPlayer.movePion(9, Posisi.Posisi(3, 2), GM.board)
+    GM.printInfo()
+    print("=====================================================")
+
+    # GM.currentPlayer.listAllPossibleMove(5, GM.board)
+    for move in GM.currentPlayer.listAllPossibleMove(5, GM.board):
+        move.printPosisi()
+
+    print(Minimax.Z_Function(GM.currentPlayer, boardSize))
+    print(Minimax.Z_Function(GM.oppositePlayer, boardSize))

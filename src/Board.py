@@ -8,7 +8,7 @@ class Board:
     def __init__(self, N):
         self.size = N
         self.cell = [[Cell(0, 0) for j in range(N)] for i in range(N)]
-        # self.startState()
+        self.startState()
 
     def printBoard(self):
         for i in range(self.size):
@@ -19,23 +19,21 @@ class Board:
             print()
 
     def startState(self):
-        self.setPlayerOne()
-        self.setPlayerTwo()
+        self.setRegionOne()
+        self.setRegionTwo()
 
-    def setPlayerOne(self):
+    def setRegionOne(self):
         mid = int(self.size / 2)
         for i in range(mid):
             for j in range(mid):
                 if (i + j < mid):
-                    self.cell[i][j].setOwner(1)
                     self.cell[i][j].setRegion(1)
 
-    def setPlayerTwo(self):
+    def setRegionTwo(self):
         mid = int(self.size / 2)
         for i in range(mid, self.size):
             for j in range(mid, i + 1):
                 temp = i - j
-                self.cell[i][self.size - 1 - temp].setOwner(2)
                 self.cell[i][self.size - 1 - temp].setRegion(2)
 
     def setAllPionPosition(self, Player1, Player2):

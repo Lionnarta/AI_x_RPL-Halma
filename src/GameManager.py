@@ -14,12 +14,6 @@ class GameManager:
         self.board = Board.Board(boardSize)
 
     def printInfo(self):
-        if self.currentPlayer.noPlayer == 1:
-            self.board.setAllPionPosition(self.currentPlayer,
-                                          self.oppositePlayer)
-        else:
-            self.board.setAllPionPosition(self.oppositePlayer,
-                                          self.currentPlayer)
         self.board.printBoard()
 
     def nextTurn(self):
@@ -30,6 +24,7 @@ class GameManager:
 
 if __name__ == "__main__":
     GM = GameManager()
+    GM.board.setAllPionPosition(GM.currentPlayer, GM.oppositePlayer)
     GM.printInfo()
     print("=====================================================")
     GM.currentPlayer.movePion(14, Posisi.Posisi(4, 1), GM.board)

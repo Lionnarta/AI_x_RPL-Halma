@@ -34,6 +34,9 @@ def coordinate_to_point(x, y, setup):
     y1 = (x - setup.get_x()) / setup.get_scale()
     return math.floor(x1), math.floor(y1)
 
+def matriks_to_gui(matrik, setup):
+
+
 # Main game screen
 def main(x, screen):
     # Setup scale, x, y

@@ -1,7 +1,7 @@
 import numpy as np
 import Pion
 import Posisi
-
+import time
 
 class Player:
     """
@@ -54,26 +54,16 @@ class Player:
                         if (pion.isValidMove(tempPosition, board) and (tempPosition not in queuePossibleMove)):
                             queueSimpul.append(tempPosition)
                             queuePossibleMove.append(tempPosition)
+                            # Heuristics possible move
             if queueSimpul:
                 newPosition = queueSimpul.pop()
                 currentPosition = newPosition
         return queuePossibleMove
 
-        # expandSimpul = None
-        # while 1:
-        #     for x in range(-1, 2):
-        #         for y in range(-1, 2):
-        #             if pion.isThisHaveOwner(Posisi.Posisi(curX+x, curY+y), board) == True:
-        #                 if pion.isValidMove(Posisi.Posisi(curX+2*x, curY+2*y), board):
-        #                     queueSimpul.append(
-        #                         Posisi.Posisi(curX+2*x, curY+2*y))
-        #                     print(Posisi.Posisi(curX+2*x, curY+2*y).printPosisi())
-        #     if queueSimpul:
-        #         expandSimpul = queueSimpul.pop()
-        #         queuePossibleMove.append(expandSimpul)
-        #     else:
-        #         break
-        # return queuePossibleMove
+
+
+
+
 
     def setPlayerOne(self, boardSize):
         mid = int(boardSize / 2)

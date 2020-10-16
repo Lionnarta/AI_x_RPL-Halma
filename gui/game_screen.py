@@ -84,12 +84,12 @@ def main(x, screen):
         # List pion to gui
         for item in list_pion:
             if item[1] == 1:
-                image = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "pawn", "green_pawn.png"))
+                image = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "green_pawn.png"))
                 image = pygame.transform.scale(image, (setup.get_scale(), setup.get_scale()))
                 rect = image.get_rect()
                 screen.blit(image, (setup.get_scale()*item[0][1]+setup.get_x(), setup.get_scale()*item[0][0]-setup.get_y()))
             elif item[1] == 2:
-                image = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "pawn", "red_pawn.png"))
+                image = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "red_pawn.png"))
                 image = pygame.transform.scale(image, (setup.get_scale(), setup.get_scale()))
                 rect = image.get_rect()
                 screen.blit(image, (setup.get_scale()*item[0][1]+setup.get_x(), setup.get_scale()*item[0][0]-setup.get_y()))

@@ -45,5 +45,5 @@ class Pion:
             return False
 
     def printPion(self):
-        print("Pion ID:", self.pionOwner)
+        print("Pion ID:", self.pionOwner, endl=" --> ")
         self.currentPosition.printPosisi()

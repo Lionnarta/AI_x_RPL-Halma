@@ -16,6 +16,9 @@ class Posisi:
     def __eq__(self, P):
         return (self.x == P.x) and (self.y == P.y)
 
+    def __eq__(self, P):
+        return ((self.x == P.x) and (self.y == P.y))
+
 
 if __name__ == "__main__":
     P1 = Posisi(0, 3)

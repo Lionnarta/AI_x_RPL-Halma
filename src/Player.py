@@ -3,12 +3,12 @@ import Pion
 import Posisi
 import time
 
+
 class Player:
     """
     class untuk agen
     Terdiri dari pion-pion dalam board
     """
-
     def __init__(self, noPlayer, boardSize):
         self.noPlayer = noPlayer
         self.arrayPion = []
@@ -28,6 +28,12 @@ class Player:
     def movePion(self, pionId, posisi, board):
         self.arrayPion[pionId].move(posisi, board)
 
+    def getPionID(self, posisi):
+        for idx in range(len(self.arrayPion)):
+            if (self.arrayPion[idx].currentPosition == posisi):
+                return idx
+        return -1
+
     def listAllPossibleMove(self, pionId, board):
         # return berupa list dari posisi
         queuePossibleMove = []
@@ -39,8 +45,8 @@ class Player:
         # move ONE STEP for up down left right and diagonal
         for x in range(-1, 2):
             for y in range(-1, 2):
-                if pion.isValidMove(Posisi.Posisi(curX+x, curY+y), board):
-                    queuePossibleMove.append(Posisi.Posisi(curX+x, curY+y))
+                if pion.isValidMove(Posisi.Posisi(curX + x, curY + y), board):
+                    queuePossibleMove.append(Posisi.Posisi(curX + x, curY + y))
 
         # move JUMP for up down left right
         queueSimpul.append(pion.currentPosition)
@@ -48,10 +54,13 @@ class Player:
         while queueSimpul:
             for x in range(-1, 2):
                 for y in range(-1, 2):
-                    if pion.isThisHaveOwner(Posisi.Posisi(currentPosition.x+x, currentPosition.y+y), board):
-                        tempPosition = Posisi.Posisi(
-                            currentPosition.x+2*x, currentPosition.y+2*y)
-                        if (pion.isValidMove(tempPosition, board) and (tempPosition not in queuePossibleMove)):
+                    if pion.isThisHaveOwner(
+                            Posisi.Posisi(currentPosition.x + x,
+                                          currentPosition.y + y), board):
+                        tempPosition = Posisi.Posisi(currentPosition.x + 2 * x,
+                                                     currentPosition.y + 2 * y)
+                        if (pion.isValidMove(tempPosition, board)
+                                and (tempPosition not in queuePossibleMove)):
                             queueSimpul.append(tempPosition)
                             queuePossibleMove.append(tempPosition)
                             # Heuristics possible move
@@ -59,11 +68,6 @@ class Player:
                 newPosition = queueSimpul.pop()
                 currentPosition = newPosition
         return queuePossibleMove
-
-
-
-
-
 
     def setPlayerOne(self, boardSize):
         mid = int(boardSize / 2)

@@ -23,5 +23,5 @@ class Pion:
             board.cell[posisi.x][posisi.y].setOwner(1)
 
     def printPion(self):
-        print("Pion ID:", self.pionOwner)
+        print("Pion ID:", self.pionOwner, endl=" --> ")
         self.currentPosition.printPosisi()

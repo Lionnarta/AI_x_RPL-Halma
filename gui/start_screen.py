@@ -27,10 +27,10 @@ def start():
     event_running = True
     active = 0
     board = 8
-    input_active = False
     player_default = 1
     txt = ''
     FONT = pygame.font.Font(None, 32)
+    input_active = False
     # Game loop
     while event_running:
         # Screen background
@@ -160,7 +160,6 @@ def start():
         else:
             screen.blit(play, play_pos)
 
-
         # Event
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -223,17 +222,14 @@ def start():
                     screen.blit(green_u, green_pos)
                     screen.blit(red_a, red_pos)
                     player_default = 2
-                
-        # # Button event
-        # if button_1.collidepoint(mouse[0], mouse[1]):
-        #     if click:
-        #         main(8, screen)
-        # if button_2.collidepoint(mouse[0], mouse[1]):
-        #     if click:
-        #         main(10, screen)
-        # if button_3.collidepoint(mouse[0], mouse[1]):
-        #     if click:
-        #         main(16, screen)     
+                # Play
+                if(play_pos.collidepoint(mouse[0], mouse[1])):
+                    if txt == '':
+                        main(screen, active, board, player_default, '20')
+                    elif active == 2:
+                        main(screen, active, board, 0, txt)
+                    else:
+                        main(screen, active, board, player_default, txt)
 
         # Update display
         pygame.display.update()

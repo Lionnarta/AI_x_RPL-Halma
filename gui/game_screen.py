@@ -5,6 +5,7 @@ import math
 from pygame.locals import *
 from base_setup import *
 sys.path.append('../src')
+import GameManager
 
 
 def coordinate_to_point(x, y, setup):
@@ -12,60 +13,111 @@ def coordinate_to_point(x, y, setup):
     y1 = (x - setup.get_x()) / setup.get_scale()
     return math.floor(x1), math.floor(y1)
 
+
+def point_to_coordinate(x, y, baseSetup):
+    coor_x = y * baseSetup.get_scale() + baseSetup.get_x()
+    coor_y = x * baseSetup.get_scale() - baseSetup.get_y()
+    return coor_x, coor_y
+
+
 def matriks_to_list(matrik, setup):
     list_pion = []
     for i in range(matrik.size):
         for j in range(matrik.size):
-            if matrik.cell.owner == 1:
-                list_pion.append(((i+1,j+1),1))
-            elif matrik.cell.owner == 2:
-                list_pion.append(((i+1,j+1),2))
+            if matrik.cell[i][j].owner == 1:
+                list_pion.append(((i + 1, j + 1), 1))
+            elif matrik.cell[i][j].owner == 2:
+                list_pion.append(((i + 1, j + 1), 2))
     return list_pion
 
+
+def active_block_move(screen, listPossibleMove, baseSetup):
+    for new_position in listPossibleMove:
+        board_active = pygame.image.load(
+            os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
+                         "active_block.png"))
+        board_active = pygame.transform.scale(
+            board_active, (baseSetup.get_scale(), baseSetup.get_scale()))
+        coor = point_to_coordinate(new_position.x + 1, new_position.y + 1,
+                                   baseSetup)
+        screen.blit(board_active, (coor[0], coor[1]))
+
+
 # Main game screen
-def main(screen, active, board, player_default, txt):
-    # Setup board sizing
+def main(screen, active, boardSize, player_default, txt):
+    # Setup board scaling and shifting
     setup = base_setup(0, 0, 0)
-    if (board == 8):
+    if (boardSize == 8):
         setup.set_scale(85)
         setup.set_x(86)
         setup.set_y(44)
-    if (board == 10):
+    if (boardSize == 10):
         setup.set_scale(70)
         setup.set_x(81)
         setup.set_y(34)
-    if (board == 16):
+    if (boardSize == 16):
         setup.set_scale(45)
         setup.set_x(95)
         setup.set_y(24)
 
-    list_pion = [((1, 1), 1), ((1, 2), 1), ((1, 3), 1), ((2, 1), 1),
-                 ((2, 2), 1), ((3, 1), 1), ((8, 8), 2), ((8, 7), 2),
-                 ((8, 6), 2), ((7, 7), 2), ((7, 8), 2), ((6, 8), 2)]
+    GM = GameManager.GameManager(boardSize)
 
-    # Loop running
+    # Variable
     running = True
+    active_click_box = False
+    possible_moves = []
+    terminalState = False
     # Game loop
     while running:
         screen.fill((53, 50, 50))
         evenodd = 0
         # Draw board to screen
-        for i in range(1, board + 1):
-            for j in range(1, board + 1):
+        for i in range(1, boardSize + 1):
+            for j in range(1, boardSize + 1):
                 if evenodd % 2 == 0:
-                    pygame.draw.rect(screen, (255, 248, 220), [
-                        setup.get_scale() * j + setup.get_x(),
-                        setup.get_scale() * i - setup.get_y(),
-                        setup.get_scale(),
-                        setup.get_scale()
-                    ])
+                    if (GM.board.cell[i - 1][j - 1].region == 0):
+                        pygame.draw.rect(screen, (255, 248, 220), [
+                            setup.get_scale() * j + setup.get_x(),
+                            setup.get_scale() * i - setup.get_y(),
+                            setup.get_scale(),
+                            setup.get_scale()
+                        ])
+                    elif (GM.board.cell[i - 1][j - 1].region == 1):
+                        pygame.draw.rect(screen, (152, 251, 152), [
+                            setup.get_scale() * j + setup.get_x(),
+                            setup.get_scale() * i - setup.get_y(),
+                            setup.get_scale(),
+                            setup.get_scale()
+                        ])
+                    elif (GM.board.cell[i - 1][j - 1].region == 2):
+                        pygame.draw.rect(screen, (240, 128, 128), [
+                            setup.get_scale() * j + setup.get_x(),
+                            setup.get_scale() * i - setup.get_y(),
+                            setup.get_scale(),
+                            setup.get_scale()
+                        ])
                 else:
-                    pygame.draw.rect(screen, (222, 184, 135), [
-                        setup.get_scale() * j + setup.get_x(),
-                        setup.get_scale() * i - setup.get_y(),
-                        setup.get_scale(),
-                        setup.get_scale()
-                    ])
+                    if (GM.board.cell[i - 1][j - 1].region == 0):
+                        pygame.draw.rect(screen, (222, 184, 135), [
+                            setup.get_scale() * j + setup.get_x(),
+                            setup.get_scale() * i - setup.get_y(),
+                            setup.get_scale(),
+                            setup.get_scale()
+                        ])
+                    elif (GM.board.cell[i - 1][j - 1].region == 1):
+                        pygame.draw.rect(screen, (60, 179, 113), [
+                            setup.get_scale() * j + setup.get_x(),
+                            setup.get_scale() * i - setup.get_y(),
+                            setup.get_scale(),
+                            setup.get_scale()
+                        ])
+                    elif (GM.board.cell[i - 1][j - 1].region == 2):
+                        pygame.draw.rect(screen, (220, 20, 60), [
+                            setup.get_scale() * j + setup.get_x(),
+                            setup.get_scale() * i - setup.get_y(),
+                            setup.get_scale(),
+                            setup.get_scale()
+                        ])
                 evenodd += 1
             evenodd -= 1
 
@@ -73,6 +125,7 @@ def main(screen, active, board, player_default, txt):
         mouse = pygame.mouse.get_pos()
 
         # List pion to gui
+        list_pion = matriks_to_list(GM.board, setup)
         for item in list_pion:
             if item[1] == 1:
                 image = pygame.image.load(
@@ -95,6 +148,9 @@ def main(screen, active, board, player_default, txt):
                             (setup.get_scale() * item[0][1] + setup.get_x(),
                              setup.get_scale() * item[0][0] - setup.get_y()))
 
+        if active_click_box:
+            active_block_move(screen, possible_moves, setup)
+
         # Event
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -105,12 +161,31 @@ def main(screen, active, board, player_default, txt):
                     running = False
             if event.type == MOUSEBUTTONDOWN:
                 if (setup.get_scale() + setup.get_x() <= mouse[0] <=
-                        setup.get_scale() * (x + 1) + setup.get_x()
+                        setup.get_scale() * (boardSize + 1) + setup.get_x()
                         and setup.get_scale() - setup.get_y() <= mouse[1] <=
-                        setup.get_scale() * (x + 1) - setup.get_y()):
+                        setup.get_scale() * (boardSize + 1) - setup.get_y()):
                     # if(coordinate_to_point(mouse[0], mouse[1], setup)):
 
                     print(coordinate_to_point(mouse[0], mouse[1], setup))
+
+                    # Pass ID ke BackEnd
+                    x, y = coordinate_to_point(mouse[0], mouse[1], setup)
+                    clickedPosition = GameManager.Posisi.Posisi(x - 1, y - 1)
+                    if (GM.isValidClick(clickedPosition)):
+                        if possible_moves:
+                            possible_moves = []
+                        possible_moves, clickedID = GM.clickedPositionToMoves(
+                            clickedPosition)
+                        active_click_box = True
+                    if active_click_box and clickedPosition in possible_moves:
+                        active_click_box = False
+                        terminalState = GM.executeTheClickedMove(
+                            clickedID, clickedPosition)
+                        if terminalState == True:
+                            print("Player " + str(GM.currentPlayer.noPlayer) +
+                                  " win the game!")
+                            running = False
+                        GM.nextTurn()
 
         # Update
         pygame.display.update()

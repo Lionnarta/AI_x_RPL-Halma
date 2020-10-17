@@ -5,6 +5,7 @@ class Board:
     """
     class untuk merepresentasikan Board dari Halma
     """
+
     def __init__(self, N):
         self.size = N
         self.cell = [[Cell(0, 0) for j in range(N)] for i in range(N)]

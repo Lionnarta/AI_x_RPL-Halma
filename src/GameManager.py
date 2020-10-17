@@ -27,7 +27,7 @@ if __name__ == "__main__":
     boardSize = 8
     GM = GameManager(boardSize)
     GM.board.setAllPionPosition(GM.currentPlayer, GM.oppositePlayer)
-    GM.printInfo()
+    # GM.printInfo()
     print("=====================================================")
     GM.currentPlayer.movePion(9, Posisi.Posisi(3, 1), GM.board)
     GM.printInfo()
@@ -35,5 +35,10 @@ if __name__ == "__main__":
     GM.currentPlayer.movePion(9, Posisi.Posisi(3, 2), GM.board)
     GM.printInfo()
     print("=====================================================")
+
+    # GM.currentPlayer.listAllPossibleMove(5, GM.board)
+    for move in GM.currentPlayer.listAllPossibleMove(5, GM.board):
+        move.printPosisi()
+
     print(Minimax.Z_Function(GM.currentPlayer, boardSize))
     print(Minimax.Z_Function(GM.oppositePlayer, boardSize))

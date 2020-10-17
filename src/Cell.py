@@ -2,8 +2,11 @@ class Cell:
     """
     class untuk merepresentasikan cell dalam Board
     """
+
     def __init__(self, owner, region):
+        # owner adalah ini cell  player 1 atau milik player 2
         self.owner = owner
+        # region adalah ini daerah milik player 1 atau milik player 2
         self.region = region
 
     def setOwner(self, owner):

@@ -37,6 +37,17 @@ def coordinate_to_point(x, y, setup):
     return math.floor(x1), math.floor(y1)
 
 
+# def matriks_to_list(matrik, setup):
+#     list_pion = []
+#     for i in range(matrik.size):
+#         for j in range(matrik.size):
+#             if matrik.cell.owner == 1:
+#                 list_pion.append(((i+1,j+1),1))
+#             elif matrik.cell.owner == 2:
+#                 list_pion.append(((i+1,j+1),2))
+#     return list_pion
+
+
 # Main game screen
 def main(x, screen):
     # Setup scale, x, y
@@ -54,6 +65,9 @@ def main(x, screen):
         setup.set_x(95)
         setup.set_y(24)
 
+    list_pion = [((1, 1), 1), ((1, 2), 1), ((1, 3), 1), ((2, 1), 1),
+                 ((2, 2), 1), ((3, 1), 1), ((8, 8), 2), ((8, 7), 2),
+                 ((8, 6), 2), ((7, 7), 2), ((7, 8), 2), ((6, 8), 2)]
     # Loop running
     running = True
     # Game loop
@@ -82,6 +96,29 @@ def main(x, screen):
 
         # Getter mouse coordinates -> Tuple X, Y
         mouse = pygame.mouse.get_pos()
+
+        # List pion to gui
+        for item in list_pion:
+            if item[1] == 1:
+                image = pygame.image.load(
+                    os.path.join(os.path.dirname(os.getcwd()), "img",
+                                 "collection", "green_pawn.png"))
+                image = pygame.transform.scale(
+                    image, (setup.get_scale(), setup.get_scale()))
+                rect = image.get_rect()
+                screen.blit(image,
+                            (setup.get_scale() * item[0][1] + setup.get_x(),
+                             setup.get_scale() * item[0][0] - setup.get_y()))
+            elif item[1] == 2:
+                image = pygame.image.load(
+                    os.path.join(os.path.dirname(os.getcwd()), "img",
+                                 "collection", "red_pawn.png"))
+                image = pygame.transform.scale(
+                    image, (setup.get_scale(), setup.get_scale()))
+                rect = image.get_rect()
+                screen.blit(image,
+                            (setup.get_scale() * item[0][1] + setup.get_x(),
+                             setup.get_scale() * item[0][0] - setup.get_y()))
 
         # Event
         for event in pygame.event.get():

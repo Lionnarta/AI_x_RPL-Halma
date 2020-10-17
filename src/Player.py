@@ -1,6 +1,7 @@
 import numpy as np
 import Pion
 import Posisi
+import time
 
 
 class Player:
@@ -32,6 +33,41 @@ class Player:
             if (self.arrayPion[idx].currentPosition == posisi):
                 return idx
         return -1
+
+    def listAllPossibleMove(self, pionId, board):
+        # return berupa list dari posisi
+        queuePossibleMove = []
+        queueSimpul = []
+        pion = self.arrayPion[pionId]
+        curX = pion.currentPosition.x
+        curY = pion.currentPosition.y
+
+        # move ONE STEP for up down left right and diagonal
+        for x in range(-1, 2):
+            for y in range(-1, 2):
+                if pion.isValidMove(Posisi.Posisi(curX + x, curY + y), board):
+                    queuePossibleMove.append(Posisi.Posisi(curX + x, curY + y))
+
+        # move JUMP for up down left right
+        queueSimpul.append(pion.currentPosition)
+        currentPosition = pion.currentPosition
+        while queueSimpul:
+            for x in range(-1, 2):
+                for y in range(-1, 2):
+                    if pion.isThisHaveOwner(
+                            Posisi.Posisi(currentPosition.x + x,
+                                          currentPosition.y + y), board):
+                        tempPosition = Posisi.Posisi(currentPosition.x + 2 * x,
+                                                     currentPosition.y + 2 * y)
+                        if (pion.isValidMove(tempPosition, board)
+                                and (tempPosition not in queuePossibleMove)):
+                            queueSimpul.append(tempPosition)
+                            queuePossibleMove.append(tempPosition)
+                            # Heuristics possible move
+            if queueSimpul:
+                newPosition = queueSimpul.pop()
+                currentPosition = newPosition
+        return queuePossibleMove
 
     def setPlayerOne(self, boardSize):
         mid = int(boardSize / 2)

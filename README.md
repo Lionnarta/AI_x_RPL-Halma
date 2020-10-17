@@ -1,6 +1,6 @@
 # Halma Game with Minimax and Local Search
 
-# Deskripsi Permainan
+## Deskripsi Permainan
 Halma Game merupakan salah satu permainan jenis checker yang merupakan salah satu bagian dari competitive game yang bisa dimainkan oleh dua player. Pada kesempatan kali ini, Halma Game yang kami bangun akan menyediakan fitur untuk bermain melawan CPU atau Bot yang sudah diimplementasikan pada permainan ini. Bot yang kami bangun terdiri atas dua jenis, yaitu bot yang mengimplementasikan pendekatan Minimax Algorithm dalam penentuan aksinya dan bot yang mengimplementasikan Minimax Algorithm dengan kombinasi dengan algoritma Local Search.
 
 ## Getting Started

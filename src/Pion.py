@@ -6,7 +6,6 @@ class Pion:
     class untuk tiap pion yang ada
     pionId = identifikasi untuk memudahkan nanti dalam menggerakkan pion
     """
-
     def __init__(self, pionOwner, currentPosition):
         self.pionOwner = pionOwner
         self.currentPosition = currentPosition
@@ -21,7 +20,7 @@ class Pion:
 
             # State Baru
             self.currentPosition = posisi
-            board.cell[posisi.x][posisi.y].setOwner(1)
+            board.cell[posisi.x][posisi.y].setOwner(self.pionOwner)
 
     def isValidMove(self, posisi, board):
         # Posisi out of range
@@ -45,5 +44,5 @@ class Pion:
             return False
 
     def printPion(self):
-        print("Pion ID:", self.pionOwner, endl=" --> ")
+        print("Pion Owner:", self.pionOwner, end=" --> ")
         self.currentPosition.printPosisi()

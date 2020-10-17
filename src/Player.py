@@ -22,8 +22,11 @@ class Player:
         self.arrayPion.append(Pion)
 
     def printAllPion(self):
+        idx = 0
         for pion in self.arrayPion:
+            print("ID = ", idx, end=" --> ")
             pion.printPion()
+            idx += 1
 
     def movePion(self, pionId, posisi, board):
         self.arrayPion[pionId].move(posisi, board)
@@ -54,16 +57,20 @@ class Player:
         while queueSimpul:
             for x in range(-1, 2):
                 for y in range(-1, 2):
-                    if pion.isThisHaveOwner(
+                    if not (pion.isOutRange(
                             Posisi.Posisi(currentPosition.x + x,
-                                          currentPosition.y + y), board):
-                        tempPosition = Posisi.Posisi(currentPosition.x + 2 * x,
-                                                     currentPosition.y + 2 * y)
-                        if (pion.isValidMove(tempPosition, board)
-                                and (tempPosition not in queuePossibleMove)):
-                            queueSimpul.append(tempPosition)
-                            queuePossibleMove.append(tempPosition)
-                            # Heuristics possible move
+                                          currentPosition.y + y), board)):
+                        if pion.isThisHaveOwner(
+                                Posisi.Posisi(currentPosition.x + x,
+                                              currentPosition.y + y), board):
+                            tempPosition = Posisi.Posisi(
+                                currentPosition.x + 2 * x,
+                                currentPosition.y + 2 * y)
+                            if (pion.isValidMove(tempPosition, board) and
+                                (tempPosition not in queuePossibleMove)):
+                                queueSimpul.append(tempPosition)
+                                queuePossibleMove.append(tempPosition)
+                                # Heuristics possible move
             if queueSimpul:
                 newPosition = queueSimpul.pop()
                 currentPosition = newPosition
@@ -71,18 +78,22 @@ class Player:
 
     def setPlayerOne(self, boardSize):
         mid = int(boardSize / 2)
-        pionOwner = 1
         for i in range(mid):
             for j in range(mid):
                 if (i + j < mid):
-                    self.addPion(Pion.Pion(pionOwner, Posisi.Posisi(i, j)))
+                    self.addPion(Pion.Pion(self.noPlayer, Posisi.Posisi(i, j)))
 
     def setPlayerTwo(self, boardSize):
         mid = int(boardSize / 2)
-        pionOwner = 2
         for i in range(mid, boardSize):
             for j in range(mid, i + 1):
                 temp = i - j
                 x = i
                 y = boardSize - 1 - temp
-                self.addPion(Pion.Pion(pionOwner, Posisi.Posisi(x, y)))
+                self.addPion(Pion.Pion(self.noPlayer, Posisi.Posisi(x, y)))
+
+    def loadData(self, arrPosition):
+        idx = 0
+        for pion in self.arrayPion:
+            pion.currentPosition = arrPosition[idx]
+            idx += 1

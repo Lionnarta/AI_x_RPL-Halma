@@ -5,7 +5,6 @@ class Board:
     """
     class untuk merepresentasikan Board dari Halma
     """
-
     def __init__(self, N):
         self.size = N
         self.cell = [[Cell(0, 0) for j in range(N)] for i in range(N)]
@@ -44,6 +43,28 @@ class Board:
         for pion in Player2.arrayPion:
             self.cell[pion.currentPosition.x][pion.currentPosition.y].setOwner(
                 Player2.noPlayer)
+
+    def checkTerminalState(self, noPlayer):
+        if (noPlayer == 1):
+            mid = int(self.size / 2)
+            for i in range(mid, self.size):
+                for j in range(mid, i + 1):
+                    temp = i - j
+                    if (self.cell[i][self.size - 1 - temp].owner
+                            == 2) or (self.cell[i][self.size - 1 - temp].owner
+                                      == 0):
+                        return False
+            return True
+
+        elif (noPlayer == 2):
+            mid = int(self.size / 2)
+            for i in range(mid):
+                for j in range(mid):
+                    if (i + j < mid):
+                        if (self.cell[i][j].owner
+                                == 1) or (self.cell[i][j].owner == 0):
+                            return False
+            return True
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ class Player:
     class untuk agen
     Terdiri dari pion-pion dalam board
     """
+
     def __init__(self, noPlayer, boardSize):
         self.noPlayer = noPlayer
         self.arrayPion = []
@@ -67,7 +68,7 @@ class Player:
                                 currentPosition.x + 2 * x,
                                 currentPosition.y + 2 * y)
                             if (pion.isValidMove(tempPosition, board) and
-                                (tempPosition not in queuePossibleMove)):
+                                    (tempPosition not in queuePossibleMove)):
                                 queueSimpul.append(tempPosition)
                                 queuePossibleMove.append(tempPosition)
                                 # Heuristics possible move

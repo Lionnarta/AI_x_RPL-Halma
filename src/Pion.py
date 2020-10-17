@@ -6,6 +6,7 @@ class Pion:
     class untuk tiap pion yang ada
     pionId = identifikasi untuk memudahkan nanti dalam menggerakkan pion
     """
+
     def __init__(self, pionOwner, currentPosition):
         self.pionOwner = pionOwner
         self.currentPosition = currentPosition
@@ -29,6 +30,8 @@ class Pion:
         # Posisi diisi pion lain
         if self.isThisHaveOwner(posisi, board):
             return False
+        if self.isFalseRegion(posisi, board):
+            return False
         return True
 
     def isOutRange(self, posisi, board):
@@ -42,6 +45,13 @@ class Pion:
             return True
         else:
             return False
+
+    def isFalseRegion(self, posisi, baord):
+        if baord.cell[posisi.x][posisi.y].region == 0 and baord.cell[self.currentPosition.x][self.currentPosition.y].region == 1:
+            return True
+        if baord.cell[posisi.x][posisi.y].region == 2 and baord.cell[self.currentPosition.x][self.currentPosition.y].region == 0:
+            return True
+        return False
 
     def printPion(self):
         print("Pion Owner:", self.pionOwner, end=" --> ")

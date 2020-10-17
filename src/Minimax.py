@@ -17,14 +17,6 @@ def Z_Function(Player, N):
     return sum
 
 
-def min_value():
-    pass
-
-
-def max_value():
-    pass
-
-
 def minimax(gamestate, depth, tLimit, alpha, beta):
     # I.S currentPlayer memaximizing nilai child
     max_time = time.time() + tLimit

@@ -17,43 +17,76 @@ def Z_Function(Player, N):
     return sum
 
 
-def minimax(gamestate, depth, tLimit, alpha, beta):
-    # I.S currentPlayer memaximizing nilai child
-    max_time = time.time() + tLimit
+def getBestMove(listOfPossibleMoves, gamestate):
+    if listOfPossibleMoves:
+        maximum = -math.inf
+        posisi = Posisi.Posisi(-999, -999)
+        if (gamestate.currentPlayer.noPlayer == 1):
+            M = Posisi.Posisi(gamestate.boardSize - 1, gamestate.boardSize - 1)
+        else:
+            M = Posisi.Posisi(0, 0)
+        for i in listOfPossibleMoves:
+            value = i.euclidean(M)
+            if value > maximum:
+                posisi = i
+                maximum = value
+        return posisi
 
-    currentPlayer = gamestate.currentPlayer
-    ...
+
+def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
+    #HARAP DIPERHATIKAN UNTUK MASUKAN INISIALISASI AWAL
+    #gamestate adalah gamestate SEKARANG
+    #isCurr TRUE jika saat minimax dijalankan adalah currentPalyer=1
+    #depth diisi DEPTH LIMIT
+    #timeTotal diisi time.time() + TIME LIMIT(tLimit)
+    #alpha diisi -inf beta inf
+
     # Basis
     # Ketika udah mencapai terminal
+    if time.time(
+    ) > timeTotal or depth == 0 or gamestate.board.checkTerminalState(
+            gamestate.currentPlayer.noPlayer):
+        return gamestate, Z_Function(gamestate.currentPlayer,
+                                     gamestate.board.size)
 
     # Rekurens
-    # Ketika giliran player 1 (kita)
-    if (currentPlayer.noPlayer == 1):
+    # Ketika giliran player 1
+    if isCurr:
         maxEval = -math.inf
-        for i in range(len(currentPlayer.arrayPion)):
+        for i in range(len(gamestate.currentPlayer.arrayPion)):
             # Generate all possible actions for each pion
-            all_possible_moves_of_pion = currentPlayer.listAllPossibleMove(
-                i, board)
+            all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(
+                i, gamestate.board)
             for moves in all_possible_moves_of_pion:
                 # Execute the move and store it to the new gamestate
                 # I.S = move dan initial gamestate
                 # F.S = new gamestate
                 # Setelah udah jalan, berubah ke gamestate berikutnya (next turn)
-                # Pruningnya belum dimasukin
                 # newGameState = suatu hasil proses pengolahan diatas
-                newCurrentPlayer = Player.Player(....)
-                newGameState = GameState.GameState(board)
-                utility = minimax(newGameState, depth-1, tLimit, alpha, beta)
-                if (utility > maxEval):
-                    maxEval = utility
+
+                newGameState = GameState.GameState(gamestate.board,
+                                                   gamestate.currentPlayer,
+                                                   gamestate.oppositePlayer)
+                newGameState.currentPlayer.movePion(
+                    i,
+                    moves,
+                    gamestate.board,
+                )
+                oldGameState, utility = minimax(newGameState, False, depth - 1,
+                                                timeTotal, alpha, beta)
+                maxEval = max(maxEval, utility)
+                alpha = max(alpha, maxEval)
+                if (beta <= alpha):
+                    break
+        return newGameState, maxEval
 
     # Ketika giliran player 2 (lawan)
     else:
         minEval = math.inf
-        for i in range(len(currentPlayer.arrayPion)):
+        for i in range(len(gamestate.currentPlayer.arrayPion)):
             # Generate all possible actions for each pion
-            all_possible_moves_of_pion = currentPlayer.listAllPossibleMove(
-                i, board)
+            all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(
+                i, gamestate.board)
             for moves in all_possible_moves_of_pion:
                 # Execute the move and store it to the new gamestate
                 # I.S = move dan initial gamestate
@@ -61,7 +94,19 @@ def minimax(gamestate, depth, tLimit, alpha, beta):
                 # Setelah udah jalan, berubah ke gamestate berikutnya (next turn)
                 # Pruningnya belum dimasukin
                 # newGameState = suatu hasil proses pengolahan diatas
-                utility = minimax(newGameState, depth-1, tLimit, alpha, beta)
-                if (utility < minEval):
-                    minEval = utility
-        return minEval
+                newGameState = GameState.GameState(gamestate.board,
+                                                   gamestate.currentPlayer,
+                                                   gamestate.oppositePlayer)
+                newGameState.currentPlayer.movePion(
+                    i,
+                    moves,
+                    gamestate.board,
+                )
+                oldGameStateutility = minimax(newGameState, True, depth - 1,
+                                              timeTotal, alpha, beta)
+
+                minEval = min(minEval, utility)
+                beta = min(beta, minEval)
+                if (beta <= alpha):
+                    break
+        return newGameState, minEval

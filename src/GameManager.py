@@ -88,6 +88,33 @@ class GameManager:
         elif (choice == 4):
             self.botVsBot()
 
+    def isValidClick(self, position):
+        clickedCell = self.board.cell[position.x][position.y]
+        if (clickedCell.owner == self.currentPlayer.noPlayer):
+            return True
+        else:
+            return False
+
+    def clickedPositionToMoves(self, position):
+        # self.printInfo()
+        print("PLAYER " + str(self.currentPlayer.noPlayer) + " TURN!")
+        # self.currentPlayer.printAllPion()
+        chosenID = self.currentPlayer.getPionID(position)
+        # print(chosenID)
+        possible_moves = self.currentPlayer.listAllPossibleMove(
+            chosenID, self.board)
+        # for i in range(len(possible_moves)):
+        #     print(str(i + 1) + ". ", end="")
+        #     possible_moves[i].printPosisi()
+        return possible_moves, chosenID
+
+    def executeTheClickedMove(self, chosenID, position):
+        self.currentPlayer.movePion(chosenID, position, self.board)
+        terminalState = False
+        if (self.board.checkTerminalState(self.currentPlayer.noPlayer)):
+            terminalState = True
+        return terminalState
+
     def playing(self):
         terminalState = False
         while not (terminalState):

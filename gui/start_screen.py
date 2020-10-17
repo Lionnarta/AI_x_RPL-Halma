@@ -39,6 +39,10 @@ def start():
         # Getter mouse coordinates -> Tuple X, Y
         mouse = pygame.mouse.get_pos()
 
+        # Title
+        halma_title = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "title.png"))
+        screen.blit(halma_title, (width/2-600, height/2-400))
+
         # Game mode
         game_mode = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "game_mode.png"))
         screen.blit(game_mode, (width/2-425, height/2-45))

@@ -4,23 +4,23 @@ import pygame
 import math
 from pygame.locals import *
 from base_setup import *
-sys.path.insert(1, '/src/Board.py')
-import Board
+sys.path.append('../src')
+
 
 def coordinate_to_point(x, y, setup):
     x1 = (y + setup.get_y()) / setup.get_scale()
     y1 = (x - setup.get_x()) / setup.get_scale()
     return math.floor(x1), math.floor(y1)
 
-# def matriks_to_list(matrik, setup):
-#     list_pion = []
-#     for i in range(matrik.size):
-#         for j in range(matrik.size):
-#             if matrik.cell.owner == 1:
-#                 list_pion.append(((i+1,j+1),1))
-#             elif matrik.cell.owner == 2:
-#                 list_pion.append(((i+1,j+1),2))
-#     return list_pion
+def matriks_to_list(matrik, setup):
+    list_pion = []
+    for i in range(matrik.size):
+        for j in range(matrik.size):
+            if matrik.cell.owner == 1:
+                list_pion.append(((i+1,j+1),1))
+            elif matrik.cell.owner == 2:
+                list_pion.append(((i+1,j+1),2))
+    return list_pion
 
 # Main game screen
 def main(screen, active, board, player_default, txt):

@@ -27,6 +27,12 @@ class Player:
     def movePion(self, pionId, posisi, board):
         self.arrayPion[pionId].move(posisi, board)
 
+    def getPionID(self, posisi):
+        for idx in range(len(self.arrayPion)):
+            if (self.arrayPion[idx].currentPosition == posisi):
+                return idx
+        return -1
+
     def setPlayerOne(self, boardSize):
         mid = int(boardSize / 2)
         pionOwner = 1

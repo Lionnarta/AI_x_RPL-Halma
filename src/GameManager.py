@@ -4,17 +4,20 @@ import Posisi
 import Board
 import Cell
 import GameState
-# import Minimax
+import Minimax
+import time
+import math
 
 boardSize = 10
 
 
 class GameManager:
-    def __init__(self, boardSize):
+    def __init__(self, boardSize, choice):
         self.currentPlayer = Player.Player(1, boardSize)
         self.oppositePlayer = Player.Player(2, boardSize)
         self.board = Board.Board(boardSize)
         self.board.setAllPionPosition(self.currentPlayer, self.oppositePlayer)
+        self.choice = choice
 
     def printInfo(self):
         self.board.printBoard()
@@ -87,6 +90,17 @@ class GameManager:
             self.playerVsMinMaxLocalSearch()
         elif (choice == 4):
             self.botVsBot()
+
+    def minimaxMove(self):
+        print("PLAYER " + str(self.currentPlayer.noPlayer) + " MINIMAX TURN!")
+        self.currentPlayer.printAllPion()
+        # Minimax Process
+        currentState = GameState.GameState(self.board, self.currentPlayer,
+                                           self.oppositePlayer)
+        minimaxState, _eval = Minimax.minimax(currentState, True, 3,
+                                              time.time() + 10, -math.inf,
+                                              math.inf)
+        self.assignState(minimaxState)
 
     def isValidClick(self, position):
         clickedCell = self.board.cell[position.x][position.y]
@@ -209,6 +223,11 @@ class GameManager:
         self.printInfo()
         print("Player " + str(self.currentPlayer.noPlayer) + " win the game!")
 
+    def assignState(self, newState):
+        self.currentPlayer = newState.currentPlayer
+        self.oppositePlayer = newState.oppositePlayer
+        self.board = newState.board
+
     def playerVsMinMax(self):
         terminalState = False
         while not (terminalState):
@@ -219,8 +238,13 @@ class GameManager:
                       " MINIMAX TURN!")
                 self.currentPlayer.printAllPion()
                 # Minimax Process
-                # minMaxID, minMaxPosition = minMaxProcess()
-                # self.currentPlayer.movePion(minMaxID, minMaxPosition, self.board)
+                currentState = GameState.GameState(self.board,
+                                                   self.currentPlayer,
+                                                   self.oppositePlayer)
+                minimaxState, _eval = Minimax.minimax(currentState, True, 3,
+                                                      time.time() + 10,
+                                                      -math.inf, math.inf)
+                self.assignState(minimaxState)
             else:
                 print("PLAYER " + str(self.currentPlayer.noPlayer) + " TURN!")
                 self.currentPlayer.printAllPion()
@@ -250,18 +274,20 @@ class GameManager:
 
 
 if __name__ == "__main__":
-    print("Welcome to the Halma Game!")
-    print("1. Multiplayer")
-    print("2. Player vs CPU Minimax")
-    print("3. Player vs CPU Minimax Local Search")
-    print("4. CPU Minimax vs CPU Minimax Local Search")
-    choice = int(input("Masukkan pilihan mode permainan yang diinginkan: "))
-    boardSize = int(input("Pilih ukuran papan N x N dalam input bilangan N: "))
-    tlimit = int(input("Tentukan time limit untuk setiap permainan! "))
-    playerChoice = 0
-    if (choice != 1) or (choice != 4):
-        playerchoice = int(
-            input("Tentukan mau pilih Merah (1) atau Hijau (2): "))
+    # print("Welcome to the Halma Game!")
+    # print("1. Multiplayer")
+    # print("2. Player vs CPU Minimax")
+    # print("3. Player vs CPU Minimax Local Search")
+    # print("4. CPU Minimax vs CPU Minimax Local Search")
+    # choice = int(input("Masukkan pilihan mode permainan yang diinginkan: "))
+    # boardSize = int(input("Pilih ukuran papan N x N dalam input bilangan N: "))
+    # tlimit = int(input("Tentukan time limit untuk setiap permainan! "))
+    # playerChoice = 0
+    # if (choice != 1) or (choice != 4):
+    #     playerchoice = int(
+    #         input("Tentukan mau pilih Merah (1) atau Hijau (2): "))
 
-    GM = GameManager(boardSize)
+    boardSize = 4
+    choice = 2
+    GM = GameManager(boardSize, choice)
     GM.startGame(choice)

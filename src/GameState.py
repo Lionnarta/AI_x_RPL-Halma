@@ -1,12 +1,13 @@
 import Board
 import Player
+import copy
 
 
 class GameState:
     def __init__(self, Board, Player1, Player2):
-        self.board = Board
-        self.currentPlayer = Player1
-        self.oppositePlayer = Player2
+        self.board = copy.deepcopy(Board)
+        self.currentPlayer = copy.deepcopy(Player1)
+        self.oppositePlayer = copy.deepcopy(Player2)
 
     def save(self, textFile):
         # Save board to text file

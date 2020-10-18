@@ -67,17 +67,26 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
                 newGameState = GameState.GameState(gamestate.board,
                                                    gamestate.currentPlayer,
                                                    gamestate.oppositePlayer)
-                newGameState.currentPlayer.movePion(
-                    i,
-                    moves,
-                    gamestate.board,
-                )
+                # print("======================" + str(depth) + "fano" + str(i) +
+                #       "=======================")
+                # gamestate.board.printBoard()
+                newGameState.currentPlayer.movePion(i, moves,
+                                                    newGameState.board)
+                # print("======================" + str(depth) + "filbert" +
+                #       str(i) + "=======================")
+                # gamestate.board.printBoard()
+                print("======================" + str(depth) + "Didalem cuy" +
+                      str(i) + "=======================")
+                newGameState.board.printBoard()
                 oldGameState, utility = minimax(newGameState, False, depth - 1,
                                                 timeTotal, alpha, beta)
                 maxEval = max(maxEval, utility)
                 alpha = max(alpha, maxEval)
                 if (beta <= alpha):
                     break
+        print("======================" + str(depth) +
+              "=======================")
+        newGameState.board.printBoard()
         return newGameState, maxEval
 
     # Ketika giliran player 2 (lawan)
@@ -97,16 +106,19 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
                 newGameState = GameState.GameState(gamestate.board,
                                                    gamestate.currentPlayer,
                                                    gamestate.oppositePlayer)
-                newGameState.currentPlayer.movePion(
-                    i,
-                    moves,
-                    gamestate.board,
-                )
-                oldGameStateutility = minimax(newGameState, True, depth - 1,
-                                              timeTotal, alpha, beta)
+                newGameState.currentPlayer.movePion(i, moves,
+                                                    newGameState.board)
+                print("======================" + str(depth) + "Didalem cuy" +
+                      str(i) + "=======================")
+                newGameState.board.printBoard()
+                oldGameState, utility = minimax(newGameState, True, depth - 1,
+                                                timeTotal, alpha, beta)
 
                 minEval = min(minEval, utility)
                 beta = min(beta, minEval)
                 if (beta <= alpha):
                     break
+        print("======================" + str(depth) +
+              "=======================")
+        newGameState.board.printBoard()
         return newGameState, minEval

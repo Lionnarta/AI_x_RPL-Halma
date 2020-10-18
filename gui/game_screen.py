@@ -43,6 +43,31 @@ def active_block_move(screen, listPossibleMove, baseSetup):
         screen.blit(board_active, (coor[0], coor[1]))
 
 
+def update_board(screen, setup, GM):
+    list_pion = matriks_to_list(GM.board, setup)
+    for item in list_pion:
+        if item[1] == 1:
+            image = pygame.image.load(
+                os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
+                             "green_pawn.png"))
+            image = pygame.transform.scale(
+                image, (setup.get_scale(), setup.get_scale()))
+            rect = image.get_rect()
+            screen.blit(image,
+                        (setup.get_scale() * item[0][1] + setup.get_x(),
+                         setup.get_scale() * item[0][0] - setup.get_y()))
+        elif item[1] == 2:
+            image = pygame.image.load(
+                os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
+                             "red_pawn.png"))
+            image = pygame.transform.scale(
+                image, (setup.get_scale(), setup.get_scale()))
+            rect = image.get_rect()
+            screen.blit(image,
+                        (setup.get_scale() * item[0][1] + setup.get_x(),
+                         setup.get_scale() * item[0][0] - setup.get_y()))
+
+
 # Main game screen
 def main(screen, active, boardSize, player_default, txt):
     # Setup board scaling and shifting
@@ -60,7 +85,11 @@ def main(screen, active, boardSize, player_default, txt):
         setup.set_x(95)
         setup.set_y(24)
 
-    GM = GameManager.GameManager(boardSize)
+    #  Setup status board
+    # game_status = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "green_pawn.png")))
+    # game_status_pos = Rect(width/2+)
+
+    GM = GameManager.GameManager(boardSize, active)
 
     # Variable
     running = True
@@ -123,33 +152,37 @@ def main(screen, active, boardSize, player_default, txt):
 
         # Getter mouse coordinates -> Tuple X, Y
         mouse = pygame.mouse.get_pos()
-
+        update_board(screen, setup, GM)
         # List pion to gui
-        list_pion = matriks_to_list(GM.board, setup)
-        for item in list_pion:
-            if item[1] == 1:
-                image = pygame.image.load(
-                    os.path.join(os.path.dirname(os.getcwd()), "img",
-                                 "collection", "green_pawn.png"))
-                image = pygame.transform.scale(
-                    image, (setup.get_scale(), setup.get_scale()))
-                rect = image.get_rect()
-                screen.blit(image,
-                            (setup.get_scale() * item[0][1] + setup.get_x(),
-                             setup.get_scale() * item[0][0] - setup.get_y()))
-            elif item[1] == 2:
-                image = pygame.image.load(
-                    os.path.join(os.path.dirname(os.getcwd()), "img",
-                                 "collection", "red_pawn.png"))
-                image = pygame.transform.scale(
-                    image, (setup.get_scale(), setup.get_scale()))
-                rect = image.get_rect()
-                screen.blit(image,
-                            (setup.get_scale() * item[0][1] + setup.get_x(),
-                             setup.get_scale() * item[0][0] - setup.get_y()))
+        # list_pion = matriks_to_list(GM.board, setup)
+        # for item in list_pion:
+        #     if item[1] == 1:
+        #         image = pygame.image.load(
+        #             os.path.join(os.path.dirname(os.getcwd()), "img",
+        #                          "collection", "green_pawn.png"))
+        #         image = pygame.transform.scale(
+        #             image, (setup.get_scale(), setup.get_scale()))
+        #         rect = image.get_rect()
+        #         screen.blit(image,
+        #                     (setup.get_scale() * item[0][1] + setup.get_x(),
+        #                      setup.get_scale() * item[0][0] - setup.get_y()))
+        #     elif item[1] == 2:
+        #         image = pygame.image.load(
+        #             os.path.join(os.path.dirname(os.getcwd()), "img",
+        #                          "collection", "red_pawn.png"))
+        #         image = pygame.transform.scale(
+        #             image, (setup.get_scale(), setup.get_scale()))
+        #         rect = image.get_rect()
+        #         screen.blit(image,
+        #                     (setup.get_scale() * item[0][1] + setup.get_x(),
+        #                      setup.get_scale() * item[0][0] - setup.get_y()))
 
         if active_click_box:
             active_block_move(screen, possible_moves, setup)
+
+        if (GM.currentPlayer.noPlayer == 2):
+            GM.minimaxMove()
+            GM.nextTurn()
 
         # Event
         for event in pygame.event.get():
@@ -181,6 +214,7 @@ def main(screen, active, boardSize, player_default, txt):
                         active_click_box = False
                         terminalState = GM.executeTheClickedMove(
                             clickedID, clickedPosition)
+                        update_board(screen, setup, GM)
                         if terminalState == True:
                             print("Player " + str(GM.currentPlayer.noPlayer) +
                                   " win the game!")

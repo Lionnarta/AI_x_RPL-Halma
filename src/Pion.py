@@ -29,8 +29,8 @@ class Pion:
         # Posisi diisi pion lain
         if self.isThisHaveOwner(posisi, board):
             return False
-        # if self.isFalseRegion(posisi, board):
-        #     return False
+        if self.isFalseRegion(posisi, board):
+            return False
         return True
 
     def isOutRange(self, posisi, board):
@@ -46,11 +46,23 @@ class Pion:
             return False
 
     def isFalseRegion(self, posisi, board):
-        if board.cell[posisi.x][posisi.y].region == 0 and board.cell[
-                self.currentPosition.x][self.currentPosition.y].region == 1:
+        # Dari luar markas mau ke markas sendiri
+        if board.cell[posisi.x][
+                posisi.y].region == self.pionOwner and board.cell[
+                    self.currentPosition.x][
+                        self.currentPosition.y].region == 0:
             return True
-        if board.cell[posisi.x][posisi.y].region == 2 and board.cell[
-                self.currentPosition.x][self.currentPosition.y].region == 0:
+
+        # Penentuan daerah pion lawan
+        pionLawan = 2
+        if (self.pionOwner == 2):
+            pionLawan = 1
+
+        # Udah masuk markas lawan gak boleh keluar lagi
+        if (board.cell[posisi.x][posisi.y].region == 0
+                or board.cell[posisi.x][posisi.y].region
+                == self.pionOwner) and board.cell[self.currentPosition.x][
+                    self.currentPosition.y].region == pionLawan:
             return True
         return False
 

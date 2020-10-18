@@ -43,7 +43,7 @@ def start():
 
         # Title
         halma_title = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "title.png"))
-        screen.blit(halma_title, (width/2-600, height/2-400))
+        screen.blit(halma_title, (width/2-520, height/2-400))
 
         # Game mode
         game_mode = pygame.image.load(

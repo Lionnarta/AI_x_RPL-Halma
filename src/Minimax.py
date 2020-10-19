@@ -4,9 +4,15 @@ import math
 import GameState
 import Board
 import Player
+"""
+Minimax Module
+Berisi semua kumpulan fungsi dan algoritma yang dibutuhkan untuk konfigurasi modul Minimax
+Terdiri atas utility function, localSearch, minimax, dan minimaxWithLocalSearch
+"""
 
 
 def Z_Function(Player, N):
+    """ Perhitungan utility function berdasarkan informasi pion player dan state tertentu pada permainan """
     if (Player.noPlayer == 1):
         M = Posisi.Posisi(N - 1, N - 1)
     else:
@@ -18,13 +24,26 @@ def Z_Function(Player, N):
 
 
 def getBestMove(listOfPossibleMoves, gamestate):
+    """
+    Local Search dalam Algoritma Minimax with Local Search
+    Local Search digunakan untuk menyederhanakan branching dari Minimax Tree yang dibangun menjadi lebih sederhana, dari
+    kumpulan aksi valid menjadi suatu aksi tunggal terbaik yang bisa dilakukan oleh PionID pada suatu gamestate
+    Heuristic function = Euclidean(possiblemove, M)
+    Dimana M adalah titik acuan terujung (0,0) untuk player 2 dan (N-1, N-1) untuk player 1
+    """
     if listOfPossibleMoves:
         maximum = -math.inf
         posisi = Posisi.Posisi(-999, -999)
+
+        # Kalau currentPlayer adalah player 1, titik acuan adalah (boardSize-1, boardSize-1)
         if (gamestate.currentPlayer.noPlayer == 1):
             M = Posisi.Posisi(gamestate.boardSize - 1, gamestate.boardSize - 1)
+
+        # Kalau currentPlayer adalah player 2, titik acuan adalah (0, 0)
         else:
             M = Posisi.Posisi(0, 0)
+
+        # Mengambil aksi tunggal terbaik berdasarkan heuristic function
         for i in listOfPossibleMoves:
             value = i.euclidean(M)
             if value > maximum:
@@ -34,6 +53,11 @@ def getBestMove(listOfPossibleMoves, gamestate):
 
 
 def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
+    """
+    Algoritma Minimax yang akan dijalankan oleh BOT Minimax
+    - Basis : return gamestate dan Z_function apabila time exceeded, depth == 0, dan terminalState
+    - Rekurens : branching sebanyak N possible moves dan rekursif minmax berdasarkan giliran player
+    """
     #HARAP DIPERHATIKAN UNTUK MASUKAN INISIALISASI AWAL
     #gamestate adalah gamestate SEKARANG
     #isCurr TRUE jika saat minimax dijalankan adalah currentPalyer=1
@@ -55,8 +79,8 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
         maxEval = -math.inf
         for i in range(len(gamestate.currentPlayer.arrayPion)):
             # Generate all possible actions for each pion
-            all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(
-                i, gamestate.board)
+            all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(i, gamestate.board)
+
             for moves in all_possible_moves_of_pion:
                 # Execute the move and store it to the new gamestate
                 # I.S = move dan initial gamestate
@@ -67,26 +91,21 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
                 newGameState = GameState.GameState(gamestate.board,
                                                    gamestate.currentPlayer,
                                                    gamestate.oppositePlayer)
-                # print("======================" + str(depth) + "fano" + str(i) +
-                #       "=======================")
-                # gamestate.board.printBoard()
                 newGameState.currentPlayer.movePion(i, moves,
                                                     newGameState.board)
-                # print("======================" + str(depth) + "filbert" +
-                #       str(i) + "=======================")
-                # gamestate.board.printBoard()
-                print("======================" + str(depth) + "Didalem cuy" +
-                      str(i) + "=======================")
+                print(f"=========== Depth = {depth}; PionID = {i} ===========")
                 newGameState.board.printBoard()
                 oldGameState, utility = minimax(newGameState, False, depth - 1,
                                                 timeTotal, alpha, beta)
                 maxEval = max(maxEval, utility)
+
+                # Alpha Beta Pruning
                 alpha = max(alpha, maxEval)
                 if (beta <= alpha):
                     break
-        print("======================" + str(depth) +
-              "=======================")
+        print(f"=========== FINAL RETURN in Depth = {depth}; PionID = {i} ===========")
         newGameState.board.printBoard()
+        print("======================================================================")
         return newGameState, maxEval
 
     # Ketika giliran player 2 (lawan)
@@ -101,24 +120,26 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
                 # I.S = move dan initial gamestate
                 # F.S = new gamestate
                 # Setelah udah jalan, berubah ke gamestate berikutnya (next turn)
-                # Pruningnya belum dimasukin
                 # newGameState = suatu hasil proses pengolahan diatas
+                
                 newGameState = GameState.GameState(gamestate.board,
                                                    gamestate.currentPlayer,
                                                    gamestate.oppositePlayer)
                 newGameState.currentPlayer.movePion(i, moves,
                                                     newGameState.board)
-                print("======================" + str(depth) + "Didalem cuy" +
-                      str(i) + "=======================")
+                print(f"=========== Depth = {depth}; PionID = {i} ===========")
                 newGameState.board.printBoard()
                 oldGameState, utility = minimax(newGameState, True, depth - 1,
                                                 timeTotal, alpha, beta)
 
                 minEval = min(minEval, utility)
+
+                # Alpha Beta Pruning
                 beta = min(beta, minEval)
                 if (beta <= alpha):
                     break
-        print("======================" + str(depth) +
-              "=======================")
+    
+        print(f"=========== FINAL RETURN in Depth = {depth}; PionID = {i} ===========")
         newGameState.board.printBoard()
+        print("======================================================================")
         return newGameState, minEval

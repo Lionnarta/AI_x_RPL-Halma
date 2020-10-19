@@ -78,11 +78,11 @@ def start():
         image_pvp_a = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "PvP_active.png"))
-        image_pvp_a = pygame.transform.scale(image_bvb_a, (182, 100))
+        image_pvp_a = pygame.transform.scale(image_pvp_a, (182, 100))
         image_pvp_u = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "PvP_unactive.png"))
-        image_pvp_u = pygame.transform.scale(image_bvb_u, (182, 100))
+        image_pvp_u = pygame.transform.scale(image_pvp_u, (182, 100))
 
         # Button game mode position
         pvb_position = Rect(width / 2 - 425, height / 2, 182, 100)

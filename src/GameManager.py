@@ -119,7 +119,7 @@ class GameManager:
         beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
-        minimaxState, _eval = Minimax.minimax(currentState, True, 3,
+        minimaxState, _eval = Minimax.minimax(currentState, 3,
                                               time.time() + self.tlimit, -math.inf,
                                               math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess
@@ -134,7 +134,7 @@ class GameManager:
         beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
-        minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, True, 3,
+        minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 3,
                                               time.time() + self.tlimit, -math.inf,
                                               math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess
@@ -188,7 +188,7 @@ class GameManager:
                 # Minimax process for the BOT
                 currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
                 beforeProcess = time.time()
-                minimaxState, _eval = Minimax.minimax(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
+                minimaxState, _eval = Minimax.minimax(currentState, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
                 print(f"Execution time = {deltaTime} seconds")
@@ -230,7 +230,7 @@ class GameManager:
                 # Minimax Local Search process for the BOT
                 currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
                 beforeProcess = time.time()
-                minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
+                minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
                 print(f"Execution time = {deltaTime} seconds")
@@ -271,7 +271,7 @@ class GameManager:
                 # Minimax Process
                 currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
                 beforeProcess = time.time()
-                minimaxState, _eval = Minimax.minimax(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
+                minimaxState, _eval = Minimax.minimax(currentState, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
                 print(f"Execution time = {deltaTime} seconds")
@@ -282,7 +282,7 @@ class GameManager:
                 # Minimax with Local Search
                 currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
                 beforeProcess = time.time()
-                minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
+                minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
                 print(f"Execution time = {deltaTime} seconds")
@@ -339,7 +339,7 @@ if __name__ == "__main__":
     #         input("Tentukan mau pilih Merah (1) atau Hijau (2): "))
 
     boardSize = 4
-    choice = 2
+    choice = 1
     tlimit = 5
     hplayer = 1
     GM = GameManager(boardSize, choice, tlimit, hplayer)

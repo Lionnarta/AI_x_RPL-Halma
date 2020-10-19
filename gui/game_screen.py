@@ -170,16 +170,16 @@ def main(screen, active, boardSize, player_default, txt):
         # Ketika currentPlayer adalah bukan giliran manusia, melainkan giliran BOT
         if (GM.currentPlayer.noPlayer != player_default):
             # Mode permainan adalah Player vs BOT Minimax
-            if (active == 0):
+            if (active == 1):
                 GM.minimaxMove()
                 GM.nextTurn()
             # Mode permainan adalah Player vs BOT Minimax Local Search
-            elif (active == 1):
+            elif (active == 2):
                 GM.minimaxLocalSearchMove()
                 GM.nextTurn()
         
         # Ketika mode permainan adalah BOT Minimax vs BOT Minimax Local Search
-        if (active == 2):
+        if (active == 3):
             if (GM.currentPlayer.noPlayer == 1):
                 GM.minimaxMove()
                 GM.nextTurn()
@@ -225,6 +225,7 @@ def main(screen, active, boardSize, player_default, txt):
                         terminalState = GM.executeTheClickedMove(
                             clickedID, clickedPosition)
                         update_board(screen, setup, GM)
+                        pygame.display.update()
                         if terminalState == True:
                             print("Player " + str(GM.currentPlayer.noPlayer) +
                                   " win the game!")

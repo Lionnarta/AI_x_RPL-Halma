@@ -19,6 +19,12 @@ class GameState:
         self.currentPlayer = copy.deepcopy(Player1)
         self.oppositePlayer = copy.deepcopy(Player2)
 
+    def nextTurn(self):
+        """ GameState switching player """
+        temp = self.currentPlayer
+        self.currentPlayer = self.oppositePlayer
+        self.oppositePlayer = temp
+
     def save(self, textFile):
         """ Menyimpan state ke dalam textFile agar bisa diload di lain waktu """
         # Save board to text file

@@ -121,7 +121,7 @@ class GameManager:
                                            self.oppositePlayer)
         minimaxState, _eval = Minimax.minimax(currentState, True, 3,
                                               time.time() + self.tlimit, -math.inf,
-                                              math.inf)
+                                              math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess
         print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
@@ -134,9 +134,9 @@ class GameManager:
         beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
-        minimaxState, _eval = Minimax.minimax(currentState, True, 3,
+        minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, True, 3,
                                               time.time() + self.tlimit, -math.inf,
-                                              math.inf)
+                                              math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess
         print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
@@ -188,7 +188,7 @@ class GameManager:
                 # Minimax process for the BOT
                 currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
                 beforeProcess = time.time()
-                minimaxState, _eval = Minimax.minimax(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf)
+                minimaxState, _eval = Minimax.minimax(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
                 print(f"Execution time = {deltaTime} seconds")
@@ -230,7 +230,7 @@ class GameManager:
                 # Minimax Local Search process for the BOT
                 currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
                 beforeProcess = time.time()
-                minimaxState, _eval = Minimax.minimax(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf)
+                minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
                 print(f"Execution time = {deltaTime} seconds")
@@ -269,14 +269,23 @@ class GameManager:
                       " MINIMAX TURN!")
                 self.currentPlayer.printAllPion()
                 # Minimax Process
-                # minMaxID, minMaxPosition = minMaxProcess()
-                # self.currentPlayer.movePion(minMaxID, minMaxPosition, self.board)
+                currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
+                beforeProcess = time.time()
+                minimaxState, _eval = Minimax.minimax(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
+                self.assignState(minimaxState)
+                deltaTime = time.time() - beforeProcess
+                print(f"Execution time = {deltaTime} seconds")
+
             else:
                 print("PLAYER " + str(self.currentPlayer.noPlayer) + " MINIMAX LOCAL SEARCH TURN!")
                 self.currentPlayer.printAllPion()
                 # Minimax with Local Search
-                # minMaxID, minMaxPosition = minMaxProcess()
-                # self.currentPlayer.movePion(minMaxID, minMaxPosition, self.board)
+                currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
+                beforeProcess = time.time()
+                minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, True, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
+                self.assignState(minimaxState)
+                deltaTime = time.time() - beforeProcess
+                print(f"Execution time = {deltaTime} seconds")
 
             if (self.board.checkTerminalState(self.currentPlayer.noPlayer)):
                 terminalState = True

@@ -11,16 +11,30 @@ Terdiri atas utility function, localSearch, minimax, dan minimaxWithLocalSearch
 """
 
 
-def Z_Function(Player, N):
+def U_Function(currentPlayer, oppositePlayer, N, maxEntity):
     """ Perhitungan utility function berdasarkan informasi pion player dan state tertentu pada permainan """
-    if (Player.noPlayer == 1):
-        M = Posisi.Posisi(N - 1, N - 1)
+    EndPointPlayer1 = Posisi.Posisi(N - 1, N - 1)
+    EndPointPlayer2 = Posisi.Posisi(0, 0)
+    
+    sumCurrentPlayer = 0
+    sumOppositePlayer = 0
+
+    if (currentPlayer.noPlayer == 1):
+        for Pion in Player.arrayPion:
+            sumCurrentPlayer += Pion.currentPosition.euclidean(EndPointPlayer1)
+        for Pion in Player.arrayPion:
+            sumOppositePlayer += Pion.currentPosition.euclidean(EndPointPlayer2)
+    
+    if (currentPlayer.noPlayer == 2):
+        for Pion in Player.arrayPion:
+            sumCurrentPlayer += Pion.currentPosition.euclidean(EndPointPlayer2)
+        for Pion in Player.arrayPion:
+            sumOppositePlayer += Pion.currentPosition.euclidean(EndPointPlayer1)
+
+    if (maxEntity == 1):
+        return -sumCurrentPlayer + sumOppositePlayer
     else:
-        M = Posisi.Posisi(0, 0)
-    sum = 0
-    for Pion in Player.arrayPion:
-        sum -= Pion.currentPosition.euclidean(M)
-    return sum
+        return -sumOppositePlayer + sumCurrentPlayer
 
 
 def getBestMove(listOfPossibleMoves, gamestate):
@@ -31,6 +45,7 @@ def getBestMove(listOfPossibleMoves, gamestate):
     Heuristic function = Euclidean(possiblemove, M)
     Dimana M adalah titik acuan terujung (0,0) untuk player 2 dan (N-1, N-1) untuk player 1
     """
+    queue = []
     if listOfPossibleMoves:
         maximum = -math.inf
         posisi = Posisi.Posisi(-999, -999)
@@ -49,13 +64,13 @@ def getBestMove(listOfPossibleMoves, gamestate):
             if value > maximum:
                 posisi = i
                 maximum = value
-        return posisi
+        return queue.append(posisi)
 
 
-def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
+def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta, maxEntity):
     """
     Algoritma Minimax yang akan dijalankan oleh BOT Minimax
-    - Basis : return gamestate dan Z_function apabila time exceeded, depth == 0, dan terminalState
+    - Basis : return gamestate dan U_Function apabila time exceeded, depth == 0, dan terminalState
     - Rekurens : branching sebanyak N possible moves dan rekursif minmax berdasarkan giliran player
     """
     #HARAP DIPERHATIKAN UNTUK MASUKAN INISIALISASI AWAL
@@ -70,8 +85,8 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
     if time.time(
     ) > timeTotal or depth == 0 or gamestate.board.checkTerminalState(
             gamestate.currentPlayer.noPlayer):
-        return gamestate, Z_Function(gamestate.currentPlayer,
-                                     gamestate.board.size)
+        return gamestate, U_Function(gamestate.currentPlayer, gamestate.oppositePlayer, 
+                                     gamestate.board.size, maxEntity)
 
     # Rekurens
     # Ketika giliran player 1
@@ -80,7 +95,7 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
         for i in range(len(gamestate.currentPlayer.arrayPion)):
             # Generate all possible actions for each pion
             all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(i, gamestate.board)
-
+            
             for moves in all_possible_moves_of_pion:
                 # Execute the move and store it to the new gamestate
                 # I.S = move dan initial gamestate
@@ -96,7 +111,7 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
                 print(f"=========== Depth = {depth}; PionID = {i} ===========")
                 newGameState.board.printBoard()
                 oldGameState, utility = minimax(newGameState, False, depth - 1,
-                                                timeTotal, alpha, beta)
+                                                timeTotal, alpha, beta, maxEntity)
                 maxEval = max(maxEval, utility)
 
                 # Alpha Beta Pruning
@@ -130,7 +145,7 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
                 print(f"=========== Depth = {depth}; PionID = {i} ===========")
                 newGameState.board.printBoard()
                 oldGameState, utility = minimax(newGameState, True, depth - 1,
-                                                timeTotal, alpha, beta)
+                                                timeTotal, alpha, beta, maxEntity)
 
                 minEval = min(minEval, utility)
 
@@ -138,6 +153,74 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta):
                 beta = min(beta, minEval)
                 if (beta <= alpha):
                     break
+    
+        print(f"=========== FINAL RETURN in Depth = {depth}; PionID = {i} ===========")
+        newGameState.board.printBoard()
+        print("======================================================================")
+        return newGameState, minEval
+
+
+def minimaxLocalSearch(gamestate, isCurr, depth, timeTotal, alpha, beta, maxEntity):
+    if time.time(
+    ) > timeTotal or depth == 0 or gamestate.board.checkTerminalState(
+            gamestate.currentPlayer.noPlayer):
+        return gamestate, U_Function(gamestate.currentPlayer, gamestate.oppositePlayer, 
+                                     gamestate.board.size, maxEntity)
+
+    # Rekurens
+    # Ketika giliran player 1
+    if isCurr:
+        maxEval = -math.inf
+        for i in range(len(gamestate.currentPlayer.arrayPion)):
+            # Generate all possible actions for each pion
+            all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(i, gamestate.board)
+            moves = getBestMove(all_possible_moves_of_pion,gamestate)
+            newGameState = GameState.GameState(gamestate.board,
+                                                gamestate.currentPlayer,
+                                                gamestate.oppositePlayer)
+            newGameState.currentPlayer.movePion(i, moves,
+                                                newGameState.board)
+            print(f"=========== Depth = {depth}; PionID = {i} ===========")
+            newGameState.board.printBoard()
+            oldGameState, utility = minimax(newGameState, False, depth - 1,
+                                            timeTotal, alpha, beta, maxEntity)
+            maxEval = max(maxEval, utility)
+
+            # Alpha Beta Pruning
+            alpha = max(alpha, maxEval)
+            if (beta <= alpha):
+                break
+        print(f"=========== FINAL RETURN in Depth = {depth}; PionID = {i} ===========")
+        newGameState.board.printBoard()
+        print("======================================================================")
+        return newGameState, maxEval
+
+    # Ketika giliran player 2 (lawan)
+    else:
+        minEval = math.inf
+        for i in range(len(gamestate.currentPlayer.arrayPion)):
+            # Generate all possible actions for each pion
+            all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(
+                i, gamestate.board)
+            all_possible_moves_of_pion = gamestate.currentPlayer.listAllPossibleMove(i, gamestate.board)
+            moves = getBestMove(all_possible_moves_of_pion,gamestate)
+                
+            newGameState = GameState.GameState(gamestate.board,
+                                                gamestate.currentPlayer,
+                                                gamestate.oppositePlayer)
+            newGameState.currentPlayer.movePion(i, moves,
+                                                newGameState.board)
+            print(f"=========== Depth = {depth}; PionID = {i} ===========")
+            newGameState.board.printBoard()
+            oldGameState, utility = minimax(newGameState, True, depth - 1,
+                                            timeTotal, alpha, beta, maxEntity)
+
+            minEval = min(minEval, utility)
+
+            # Alpha Beta Pruning
+            beta = min(beta, minEval)
+            if (beta <= alpha):
+                break
     
         print(f"=========== FINAL RETURN in Depth = {depth}; PionID = {i} ===========")
         newGameState.board.printBoard()

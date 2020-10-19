@@ -116,11 +116,14 @@ class GameManager:
         print("PLAYER " + str(self.currentPlayer.noPlayer) + " MINIMAX TURN!")
         self.currentPlayer.printAllPion()
         # Minimax Process
+        beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
         minimaxState, _eval = Minimax.minimax(currentState, True, 3,
                                               time.time() + self.tlimit, -math.inf,
                                               math.inf)
+        deltaTime = time.time() - beforeProcess
+        print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
 
     def isValidClick(self, position):

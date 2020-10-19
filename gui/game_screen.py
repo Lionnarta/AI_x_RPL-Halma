@@ -89,7 +89,7 @@ def main(screen, active, boardSize, player_default, txt):
     # game_status = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "green_pawn.png")))
     # game_status_pos = Rect(width/2+)
 
-    GM = GameManager.GameManager(boardSize, active)
+    GM = GameManager.GameManager(boardSize, active, int(txt), player_default)
 
     # Variable
     running = True
@@ -180,9 +180,9 @@ def main(screen, active, boardSize, player_default, txt):
         if active_click_box:
             active_block_move(screen, possible_moves, setup)
 
-        if (GM.currentPlayer.noPlayer == 2):
-            GM.minimaxMove()
-            GM.nextTurn()
+        # if (GM.currentPlayer.noPlayer != player_default):
+        #     GM.minimaxMove()
+        #     GM.nextTurn()
 
         # Event
         for event in pygame.event.get():

@@ -125,6 +125,21 @@ class GameManager:
         deltaTime = time.time() - beforeProcess
         print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
+    
+    def minimaxLocalSearchMove(self):
+        """ Menjalankan bot Minimax pada giliran bot tersebut """
+        print("PLAYER " + str(self.currentPlayer.noPlayer) + " MINIMAX LOCAL SEARCH TURN!")
+        self.currentPlayer.printAllPion()
+        # Minimax Process
+        beforeProcess = time.time()
+        currentState = GameState.GameState(self.board, self.currentPlayer,
+                                           self.oppositePlayer)
+        minimaxState, _eval = Minimax.minimax(currentState, True, 3,
+                                              time.time() + self.tlimit, -math.inf,
+                                              math.inf)
+        deltaTime = time.time() - beforeProcess
+        print(f"Execution time = {deltaTime} seconds")
+        self.assignState(minimaxState)
 
     def isValidClick(self, position):
         """ Mengembalikan true apabila user mengclick pion yang bukan miliknya """

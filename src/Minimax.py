@@ -20,15 +20,15 @@ def U_Function(currentPlayer, oppositePlayer, N, maxEntity):
     sumOppositePlayer = 0
 
     if (currentPlayer.noPlayer == 1):
-        for Pion in Player.arrayPion:
+        for Pion in currentPlayer.arrayPion:
             sumCurrentPlayer += Pion.currentPosition.euclidean(EndPointPlayer1)
-        for Pion in Player.arrayPion:
+        for Pion in oppositePlayer.arrayPion:
             sumOppositePlayer += Pion.currentPosition.euclidean(EndPointPlayer2)
     
     if (currentPlayer.noPlayer == 2):
-        for Pion in Player.arrayPion:
+        for Pion in currentPlayer.arrayPion:
             sumCurrentPlayer += Pion.currentPosition.euclidean(EndPointPlayer2)
-        for Pion in Player.arrayPion:
+        for Pion in oppositePlayer.arrayPion:
             sumOppositePlayer += Pion.currentPosition.euclidean(EndPointPlayer1)
 
     if (maxEntity == 1):
@@ -45,7 +45,7 @@ def getBestMove(listOfPossibleMoves, gamestate):
     Heuristic function = Euclidean(possiblemove, M)
     Dimana M adalah titik acuan terujung (0,0) untuk player 2 dan (N-1, N-1) untuk player 1
     """
-    queue = []
+
     if listOfPossibleMoves:
         maximum = -math.inf
         posisi = Posisi.Posisi(-999, -999)
@@ -64,7 +64,7 @@ def getBestMove(listOfPossibleMoves, gamestate):
             if value > maximum:
                 posisi = i
                 maximum = value
-        return queue.append(posisi)
+        return posisi
 
 
 def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta, maxEntity):

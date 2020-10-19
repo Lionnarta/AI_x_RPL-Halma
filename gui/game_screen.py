@@ -167,9 +167,25 @@ def main(screen, active, boardSize, player_default, txt):
         if active_click_box:
             active_block_move(screen, possible_moves, setup)
 
-        # if (GM.currentPlayer.noPlayer != player_default):
-        #     GM.minimaxMove()
-        #     GM.nextTurn()
+        # Ketika currentPlayer adalah bukan giliran manusia, melainkan giliran BOT
+        if (GM.currentPlayer.noPlayer != player_default):
+            # Mode permainan adalah Player vs BOT Minimax
+            if (active == 0):
+                GM.minimaxMove()
+                GM.nextTurn()
+            # Mode permainan adalah Player vs BOT Minimax Local Search
+            elif (active == 1):
+                GM.minimaxLocalSearchMove()
+                GM.nextTurn()
+        
+        # Ketika mode permainan adalah BOT Minimax vs BOT Minimax Local Search
+        if (active == 2):
+            if (GM.currentPlayer.noPlayer == 1):
+                GM.minimaxMove()
+                GM.nextTurn()
+            else:
+                GM.minimaxLocalSearchMove()
+                GM.nextTurn()
 
         # Time
         time_run = math.floor(time.time() - time_start)

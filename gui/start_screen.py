@@ -27,7 +27,7 @@ height = screen.get_height()
 def start():
     # Variable
     event_running = True
-    active = 0
+    active = 1
     board = 8
     player_default = 1
     txt = ''
@@ -54,44 +54,62 @@ def start():
         image_pvb_a = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "PvB_active.png"))
-        image_pvb_a = pygame.transform.scale(image_pvb_a, (250, 100))
+        image_pvb_a = pygame.transform.scale(image_pvb_a, (182, 100))
         image_pvb_u = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "PvB_unactive.png"))
-        image_pvb_u = pygame.transform.scale(image_pvb_u, (250, 100))
+        image_pvb_u = pygame.transform.scale(image_pvb_u, (182, 100))
         image_pvbl_a = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "PvBl_active.png"))
-        image_pvbl_a = pygame.transform.scale(image_pvbl_a, (250, 100))
+        image_pvbl_a = pygame.transform.scale(image_pvbl_a, (182, 100))
         image_pvbl_u = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "PvBl_unactive.png"))
-        image_pvbl_u = pygame.transform.scale(image_pvbl_u, (250, 100))
+        image_pvbl_u = pygame.transform.scale(image_pvbl_u, (182, 100))
         image_bvb_a = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "BvB_active.png"))
-        image_bvb_a = pygame.transform.scale(image_bvb_a, (250, 100))
+        image_bvb_a = pygame.transform.scale(image_bvb_a, (182, 100))
         image_bvb_u = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "BvB_unactive.png"))
-        image_bvb_u = pygame.transform.scale(image_bvb_u, (250, 100))
+        image_bvb_u = pygame.transform.scale(image_bvb_u, (182, 100))
+        image_pvp_a = pygame.image.load(
+            os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
+                         "PvP_active.png"))
+        image_pvp_a = pygame.transform.scale(image_bvb_a, (182, 100))
+        image_pvp_u = pygame.image.load(
+            os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
+                         "PvP_unactive.png"))
+        image_pvp_u = pygame.transform.scale(image_bvb_u, (182, 100))
+
         # Button game mode position
-        pvb_position = Rect(width / 2 - 425, height / 2, 250, 100)
-        pvbl_position = Rect(width / 2 - 125, height / 2, 250, 100)
-        bvb_position = Rect(width / 2 + 175, height / 2, 250, 100)
+        pvb_position = Rect(width / 2 - 425, height / 2, 182, 100)
+        pvbl_position = Rect(width / 2 - 213, height / 2, 182, 100)
+        bvb_position = Rect(width / 2 - 1, height / 2, 182, 100)
+        pvp_position = Rect(width/2 + 211, height / 2, 182, 100)
         # Initiating screen blit
-        if active == 0:
+        if active == 1:
             screen.blit(image_pvb_a, pvb_position)
             screen.blit(image_pvbl_u, pvbl_position)
             screen.blit(image_bvb_u, bvb_position)
-        if active == 1:
+            screen.blit(image_pvp_u, pvp_position)
+        if active == 2:
             screen.blit(image_pvb_u, pvb_position)
             screen.blit(image_pvbl_a, pvbl_position)
             screen.blit(image_bvb_u, bvb_position)
-        if active == 2:
+            screen.blit(image_pvp_u, pvp_position)
+        if active == 3:
             screen.blit(image_pvb_u, pvb_position)
             screen.blit(image_pvbl_u, pvbl_position)
             screen.blit(image_bvb_a, bvb_position)
+            screen.blit(image_pvp_u, pvp_position)
+        if active == 4:
+            screen.blit(image_pvb_u, pvb_position)
+            screen.blit(image_pvbl_u, pvbl_position)
+            screen.blit(image_bvb_u, bvb_position)
+            screen.blit(image_pvp_a, pvp_position)
 
         # Board size
         board_size = pygame.image.load(
@@ -167,7 +185,7 @@ def start():
         player = pygame.image.load(
             os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                          "player.png"))
-        if active == 0 or active == 1:
+        if active == 1 or active == 2:
             screen.blit(player, (width / 2 - 425, height / 2 + 265))
         # Player color selection
         green_a = pygame.image.load(
@@ -190,10 +208,10 @@ def start():
         green_pos = Rect(width / 2 - 265, height / 2 + 265, 60, 60)
         red_pos = Rect(width / 2 - 180, height / 2 + 265, 60, 60)
         # Initiating player
-        if player_default == 1 and (active == 0 or active == 1):
+        if player_default == 1 and (active == 1 or active == 2):
             screen.blit(green_a, green_pos)
             screen.blit(red_u, red_pos)
-        elif player_default == 2 and (active == 0 or active == 1):
+        elif player_default == 2 and (active == 1 or active == 2):
             screen.blit(green_u, green_pos)
             screen.blit(red_a, red_pos)
 
@@ -233,23 +251,33 @@ def start():
             if event.type == MOUSEBUTTONDOWN:
                 # game mode
                 if (pvb_position.collidepoint(mouse[0],
-                                              mouse[1])) and (active != 0):
+                                              mouse[1])) and (active != 1):
                     screen.blit(image_pvb_a, pvb_position)
                     screen.blit(image_pvbl_u, pvbl_position)
                     screen.blit(image_bvb_u, bvb_position)
-                    active = 0
+                    screen.blit(image_pvp_u, pvp_position)
+                    active = 1
                 if (pvbl_position.collidepoint(mouse[0],
-                                               mouse[1])) and (active != 1):
+                                               mouse[1])) and (active != 2):
                     screen.blit(image_pvb_u, pvb_position)
                     screen.blit(image_pvbl_a, pvbl_position)
                     screen.blit(image_bvb_u, bvb_position)
-                    active = 1
+                    screen.blit(image_pvp_u, pvp_position)
+                    active = 2
                 if (bvb_position.collidepoint(mouse[0],
-                                              mouse[1])) and (active != 2):
+                                              mouse[1])) and (active != 3):
                     screen.blit(image_pvb_u, pvb_position)
                     screen.blit(image_pvbl_u, pvbl_position)
                     screen.blit(image_bvb_a, bvb_position)
-                    active = 2
+                    screen.blit(image_pvp_u, pvp_position)
+                    active = 3
+                if (pvp_position.collidepoint(mouse[0],
+                                              mouse[1])) and (active != 4):
+                    screen.blit(image_pvb_u, pvb_position)
+                    screen.blit(image_pvbl_u, pvbl_position)
+                    screen.blit(image_bvb_u, bvb_position)
+                    screen.blit(image_pvp_a, pvp_position)
+                    active = 4
                 # board size
                 if (eight_pos.collidepoint(mouse[0],
                                            mouse[1])) and (board != 8):
@@ -276,12 +304,12 @@ def start():
                     input_active = False
                 # player
                 if (green_pos.collidepoint(mouse[0], mouse[1])
-                    ) and player_default == 2 and (active == 0 or active == 1):
+                    ) and player_default == 2 and (active == 1 or active == 2):
                     screen.blit(green_a, green_pos)
                     screen.blit(red_u, red_pos)
                     player_default = 1
                 if (red_pos.collidepoint(mouse[0], mouse[1])
-                    ) and player_default == 1 and (active == 0 or active == 1):
+                    ) and player_default == 1 and (active == 1 or active == 2):
                     screen.blit(green_u, green_pos)
                     screen.blit(red_a, red_pos)
                     player_default = 2

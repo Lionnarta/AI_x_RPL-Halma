@@ -2,6 +2,7 @@ import sys
 import os
 import pygame
 import math
+import time
 from pygame.locals import *
 from base_setup import *
 sys.path.append('../src')
@@ -50,56 +51,65 @@ def update_board(screen, setup, GM):
             image = pygame.image.load(
                 os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                              "green_pawn.png"))
-            image = pygame.transform.scale(
-                image, (setup.get_scale(), setup.get_scale()))
-            rect = image.get_rect()
-            screen.blit(image,
-                        (setup.get_scale() * item[0][1] + setup.get_x(),
-                         setup.get_scale() * item[0][0] - setup.get_y()))
         elif item[1] == 2:
             image = pygame.image.load(
                 os.path.join(os.path.dirname(os.getcwd()), "img", "collection",
                              "red_pawn.png"))
-            image = pygame.transform.scale(
-                image, (setup.get_scale(), setup.get_scale()))
-            rect = image.get_rect()
-            screen.blit(image,
-                        (setup.get_scale() * item[0][1] + setup.get_x(),
-                         setup.get_scale() * item[0][0] - setup.get_y()))
+        image = pygame.transform.scale(image, (setup.get_scale(), setup.get_scale()))
+        rect = image.get_rect()
+        screen.blit(image, (setup.get_scale() * item[0][1] + setup.get_x(), setup.get_scale() * item[0][0] - setup.get_y()))
 
 
 # Main game screen
 def main(screen, active, boardSize, player_default, txt):
     # Setup board scaling and shifting
-    setup = base_setup(0, 0, 0)
+    setup = base_setup(0, 0, 0, 0)
     if (boardSize == 8):
         setup.set_scale(85)
         setup.set_x(86)
         setup.set_y(44)
+        setup.set_status(343)
     if (boardSize == 10):
         setup.set_scale(70)
         setup.set_x(81)
         setup.set_y(34)
+        setup.set_status(350)
     if (boardSize == 16):
         setup.set_scale(45)
         setup.set_x(95)
         setup.set_y(24)
-
-    #  Setup status board
-    # game_status = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "green_pawn.png")))
-    # game_status_pos = Rect(width/2+)
+        setup.set_status(363)
 
     GM = GameManager.GameManager(boardSize, active, int(txt), player_default)
+    FONT = pygame.font.Font(None, 32)
 
     # Variable
     running = True
     active_click_box = False
-    possible_moves = []
     terminalState = False
+    possible_moves = []
+    time_start = time.time()
     # Game loop
     while running:
         screen.fill((53, 50, 50))
         evenodd = 0
+        
+        # Setup status board
+        game_status = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "game_status.png"))
+        game_status_pos = Rect(screen.get_width()/2+350, screen.get_height()/2-setup.get_status(), 150, 120)
+        screen.blit(game_status, game_status_pos)
+
+        # Turn
+        green_turn = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "green_pawn.png"))
+        green_turn = pygame.transform.scale(green_turn, (30, 30))
+        red_turn = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "red_pawn.png"))
+        red_turn = pygame.transform.scale(red_turn, (30, 30))
+        turn_pos = Rect(screen.get_width()/2+400, screen.get_height()/2-setup.get_status()+40, 30, 30)
+        if GM.currentPlayer.noPlayer == 1:
+            screen.blit(green_turn, turn_pos)
+        else:
+            screen.blit(red_turn, turn_pos)
+
         # Draw board to screen
         for i in range(1, boardSize + 1):
             for j in range(1, boardSize + 1):
@@ -153,29 +163,6 @@ def main(screen, active, boardSize, player_default, txt):
         # Getter mouse coordinates -> Tuple X, Y
         mouse = pygame.mouse.get_pos()
         update_board(screen, setup, GM)
-        # List pion to gui
-        # list_pion = matriks_to_list(GM.board, setup)
-        # for item in list_pion:
-        #     if item[1] == 1:
-        #         image = pygame.image.load(
-        #             os.path.join(os.path.dirname(os.getcwd()), "img",
-        #                          "collection", "green_pawn.png"))
-        #         image = pygame.transform.scale(
-        #             image, (setup.get_scale(), setup.get_scale()))
-        #         rect = image.get_rect()
-        #         screen.blit(image,
-        #                     (setup.get_scale() * item[0][1] + setup.get_x(),
-        #                      setup.get_scale() * item[0][0] - setup.get_y()))
-        #     elif item[1] == 2:
-        #         image = pygame.image.load(
-        #             os.path.join(os.path.dirname(os.getcwd()), "img",
-        #                          "collection", "red_pawn.png"))
-        #         image = pygame.transform.scale(
-        #             image, (setup.get_scale(), setup.get_scale()))
-        #         rect = image.get_rect()
-        #         screen.blit(image,
-        #                     (setup.get_scale() * item[0][1] + setup.get_x(),
-        #                      setup.get_scale() * item[0][0] - setup.get_y()))
 
         if active_click_box:
             active_block_move(screen, possible_moves, setup)
@@ -183,6 +170,13 @@ def main(screen, active, boardSize, player_default, txt):
         # if (GM.currentPlayer.noPlayer != player_default):
         #     GM.minimaxMove()
         #     GM.nextTurn()
+
+        # Time
+        time_run = math.floor(time.time() - time_start)
+        time_def = str(int(txt) - time_run)
+        time_to_gui = FONT.render(time_def, True, Color(0,0,0))
+        time_pos = Rect(screen.get_width()/2+400, screen.get_height()/2-setup.get_status()+80, 30, 30)
+        screen.blit(time_to_gui, time_pos)
 
         # Event
         for event in pygame.event.get():
@@ -219,6 +213,7 @@ def main(screen, active, boardSize, player_default, txt):
                             print("Player " + str(GM.currentPlayer.noPlayer) +
                                   " win the game!")
                             running = False
+                        time_start = time.time()
                         GM.nextTurn()
 
         # Update

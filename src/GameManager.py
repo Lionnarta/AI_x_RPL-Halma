@@ -183,15 +183,19 @@ class GameManager:
             # Giliran Player BOT Minimax
             if (self.currentPlayer.noPlayer != self.hplayer):
                 print("PLAYER " + str(self.currentPlayer.noPlayer) + " MINIMAX TURN!")
+                input("Begin minimax? ")
                 self.currentPlayer.printAllPion()
 
                 # Minimax process for the BOT
                 currentState = GameState.GameState(self.board, self.currentPlayer, self.oppositePlayer)
                 beforeProcess = time.time()
-                minimaxState, _eval = Minimax.minimax(currentState, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
+                minimaxState, _eval = Minimax.minimax(currentState, 2, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
                 print(f"Execution time = {deltaTime} seconds")
+                print("PLAYER " + str(self.currentPlayer.noPlayer) + " FANO")
+                print("PLAYER " + str(self.hplayer) + " Hello")
+                input("Boleh next sekarang!")
 
             # Giliran Player Manusia
             else:

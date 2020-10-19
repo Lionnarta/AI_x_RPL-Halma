@@ -85,8 +85,10 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta, maxEntity):
     if time.time(
     ) > timeTotal or depth == 0 or gamestate.board.checkTerminalState(
             gamestate.currentPlayer.noPlayer):
-        return gamestate, U_Function(gamestate.currentPlayer, gamestate.oppositePlayer, 
+        utility = U_Function(gamestate.currentPlayer, gamestate.oppositePlayer, 
                                      gamestate.board.size, maxEntity)
+        print(f"Utility = {utility}")
+        return gamestate, utility
 
     # Rekurens
     # Ketika giliran player 1
@@ -146,7 +148,7 @@ def minimax(gamestate, isCurr, depth, timeTotal, alpha, beta, maxEntity):
                 newGameState.board.printBoard()
                 oldGameState, utility = minimax(newGameState, True, depth - 1,
                                                 timeTotal, alpha, beta, maxEntity)
-
+                print(f"Utility = {utility}")
                 minEval = min(minEval, utility)
 
                 # Alpha Beta Pruning

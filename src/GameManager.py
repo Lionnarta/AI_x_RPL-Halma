@@ -340,7 +340,7 @@ if __name__ == "__main__":
 
     boardSize = 4
     choice = 2
-    tlimit = 10
+    tlimit = 5
     hplayer = 1
     GM = GameManager(boardSize, choice, tlimit, hplayer)
     GM.startGame()

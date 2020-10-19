@@ -93,7 +93,7 @@ def main(screen, active, boardSize, player_default, txt):
     while running:
         screen.fill((53, 50, 50))
         evenodd = 0
-        
+
         # Setup status board
         game_status = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "game_status.png"))
         game_status_pos = Rect(screen.get_width()/2+350, screen.get_height()/2-setup.get_status(), 150, 120)
@@ -212,7 +212,19 @@ def main(screen, active, boardSize, player_default, txt):
                         if terminalState == True:
                             print("Player " + str(GM.currentPlayer.noPlayer) +
                                   " win the game!")
-                            running = False
+                            win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
+                            if GM.currentPlayer.noPlayer == 1:
+                                win_img = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "win_message_1.png"))
+                                screen.blit(win_img, win_pos)
+                                pygame.display.update()
+                                time.sleep(3)
+                                running = False
+                            else:
+                                win_img = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "win_message_2.png"))
+                                screen.blit(win_img, win_pos)
+                                pygame.display.update()
+                                time.sleep(3)
+                                running = False
                         time_start = time.time()
                         GM.nextTurn()
 

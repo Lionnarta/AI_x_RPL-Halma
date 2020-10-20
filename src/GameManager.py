@@ -29,6 +29,7 @@ class GameManager:
         self.choice = choice
         self.tlimit = tlimit
         self.hplayer = hplayer
+        self.totalTime = 0
 
     def printInfo(self):
         """ Mencetak informasi board dan giliran player dari sebuah permainan """
@@ -136,10 +137,11 @@ class GameManager:
         beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
-        minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 10,
+        minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 3,
                                               time.time() + self.tlimit, -math.inf,
                                               math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess
+        self.totalTime += deltaTime
         print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
         terminalState = False
@@ -229,6 +231,7 @@ class GameManager:
     def playerVsMinMaxLocalSearch(self):
         """ Permainan Mode 2: Player vs BOT Minimax Local Search """
         terminalState = False
+        totalTime = 0
         while not (terminalState):
             self.printInfo()
 
@@ -243,6 +246,7 @@ class GameManager:
                 minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 3, time.time() + self.tlimit, -math.inf, math.inf, self.currentPlayer.noPlayer)
                 self.assignState(minimaxState)
                 deltaTime = time.time() - beforeProcess
+                totalTime += deltaTime
                 print(f"Execution time = {deltaTime} seconds")
 
             # Giliran Player Manusia
@@ -267,6 +271,7 @@ class GameManager:
 
         self.printInfo()
         print("Player " + str(self.currentPlayer.noPlayer) + " win the game!")
+        print(totalTime)
 
     def multiBot(self):
         """ Permainan Mode 3: Bot Minimax vs Bot Minimax Local Search"""

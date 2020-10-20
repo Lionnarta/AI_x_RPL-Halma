@@ -192,6 +192,7 @@ def main(screen, active, boardSize, player_default, txt):
                 pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax win the game!")
+                    print(GM.totalTime)
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
                     winMessage(screen, GM.currentPlayer.noPlayer)
                     running = False
@@ -207,6 +208,7 @@ def main(screen, active, boardSize, player_default, txt):
                 pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax Local Search win the game!")
+                    print(GM.totalTime)
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
                     winMessage(screen, GM.currentPlayer.noPlayer)
                     running = False
@@ -224,6 +226,7 @@ def main(screen, active, boardSize, player_default, txt):
                 pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax win the game!")
+                    print(GM.totalTime)
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
                     winMessage(screen, GM.currentPlayer.noPlayer)
                     running = False
@@ -238,6 +241,7 @@ def main(screen, active, boardSize, player_default, txt):
                 pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax Local Search win the game!")
+                    print(GM.totalTime)
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
                     winMessage(screen, GM.currentPlayer.noPlayer)
                     running = False
@@ -291,6 +295,7 @@ def main(screen, active, boardSize, player_default, txt):
                         pygame.display.update()
                         if terminalState == True:
                             print("Player " + str(GM.currentPlayer.noPlayer) + " win the game!")
+                            print(GM.totalTime)
                             win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
                             winMessage(screen, GM.currentPlayer.noPlayer)
                             running = False

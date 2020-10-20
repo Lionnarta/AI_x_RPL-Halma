@@ -171,19 +171,23 @@ def main(screen, active, boardSize, player_default, txt):
         if (GM.currentPlayer.noPlayer != player_default):
             # Mode permainan adalah Player vs BOT Minimax
             if (active == 1):
+                pygame.display.update()
                 GM.minimaxMove()
                 GM.nextTurn()
             # Mode permainan adalah Player vs BOT Minimax Local Search
             elif (active == 2):
+                pygame.display.update()
                 GM.minimaxLocalSearchMove()
                 GM.nextTurn()
         
         # Ketika mode permainan adalah BOT Minimax vs BOT Minimax Local Search
         if (active == 3):
             if (GM.currentPlayer.noPlayer == 1):
+                pygame.display.update()
                 GM.minimaxMove()
                 GM.nextTurn()
             else:
+                pygame.display.update()
                 GM.minimaxLocalSearchMove()
                 GM.nextTurn()
 

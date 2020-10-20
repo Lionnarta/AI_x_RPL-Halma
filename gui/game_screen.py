@@ -102,6 +102,7 @@ def main(screen, active, boardSize, player_default, txt):
     terminalState = False
     possible_moves = []
     time_start = time.time()
+    turn = 1
     # Game loop
     while running:
         screen.fill((53, 50, 50))
@@ -109,10 +110,10 @@ def main(screen, active, boardSize, player_default, txt):
 
         # Setup status board
         game_status = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "game_status.png"))
-        game_status_pos = Rect(screen.get_width()/2+350, screen.get_height()/2-setup.get_status(), 150, 120)
+        game_status_pos = Rect(screen.get_width()/2+350, screen.get_height()/2-setup.get_status(), 150, 140)
         screen.blit(game_status, game_status_pos)
 
-        # Turn
+        # player turn
         green_turn = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "green_pawn.png"))
         green_turn = pygame.transform.scale(green_turn, (30, 30))
         red_turn = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "red_pawn.png"))
@@ -217,6 +218,7 @@ def main(screen, active, boardSize, player_default, txt):
                     running = False
                 else:
                     GM.nextTurn()
+                    turn += 1
             else:
                 pygame.display.update()
                 terminalState = GM.minimaxLocalSearchMove()
@@ -227,6 +229,7 @@ def main(screen, active, boardSize, player_default, txt):
                     running = False
                 else:
                     GM.nextTurn()
+                    turn += 1
 
         # Time
         time_run = math.floor(time.time() - time_start)
@@ -234,6 +237,11 @@ def main(screen, active, boardSize, player_default, txt):
         time_to_gui = FONT.render(time_def, True, Color(0,0,0))
         time_pos = Rect(screen.get_width()/2+400, screen.get_height()/2-setup.get_status()+80, 30, 30)
         screen.blit(time_to_gui, time_pos)
+
+        # Counting turn
+        c_turn = FONT.render(str(turn), True, Color(0,0,0))
+        c_turn_pos = Rect(screen.get_width()/2+400, screen.get_height()/2-setup.get_status()+115, 30, 30)
+        screen.blit(c_turn, c_turn_pos)
 
         # Event
         for event in pygame.event.get():

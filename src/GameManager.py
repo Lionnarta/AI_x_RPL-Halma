@@ -119,10 +119,11 @@ class GameManager:
         beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
-        minimaxState, _eval = Minimax.minimax(currentState, 10,
+        minimaxState, _eval = Minimax.minimax(currentState, 3,
                                               time.time() + self.tlimit, -math.inf,
                                               math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess
+        self.totalTime += deltaTime
         print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
         terminalState = False

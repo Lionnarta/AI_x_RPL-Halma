@@ -185,8 +185,11 @@ def main(screen, active, boardSize, player_default, txt):
         if (GM.currentPlayer.noPlayer != player_default):
             # Mode permainan adalah Player vs BOT Minimax
             if (active == 1):
+                update_board(screen, setup, GM)
                 pygame.display.update()
                 terminalState = GM.minimaxMove()
+                update_board(screen, setup, GM)
+                pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax win the game!")
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
@@ -194,10 +197,14 @@ def main(screen, active, boardSize, player_default, txt):
                     running = False
                 else:
                     GM.nextTurn()
+                    turn += 1
             # Mode permainan adalah Player vs BOT Minimax Local Search
             elif (active == 2):
+                update_board(screen, setup, GM)
                 pygame.display.update()
                 terminalState = GM.minimaxLocalSearchMove()
+                update_board(screen, setup, GM)
+                pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax Local Search win the game!")
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
@@ -205,12 +212,16 @@ def main(screen, active, boardSize, player_default, txt):
                     running = False
                 else:
                     GM.nextTurn()
+                    turn += 1
         
         # Ketika mode permainan adalah BOT Minimax vs BOT Minimax Local Search
         if (active == 3):
             if (GM.currentPlayer.noPlayer == 1):
+                update_board(screen, setup, GM)
                 pygame.display.update()
                 terminalState = GM.minimaxMove()
+                update_board(screen, setup, GM)
+                pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax win the game!")
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
@@ -220,8 +231,11 @@ def main(screen, active, boardSize, player_default, txt):
                     GM.nextTurn()
                     turn += 1
             else:
+                update_board(screen, setup, GM)
                 pygame.display.update()
                 terminalState = GM.minimaxLocalSearchMove()
+                update_board(screen, setup, GM)
+                pygame.display.update()
                 if terminalState == True:
                     print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax Local Search win the game!")
                     win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)

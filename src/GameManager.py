@@ -341,22 +341,18 @@ class GameManager:
         print("Player " + str(self.currentPlayer.noPlayer) + " win the game!")
 
 if __name__ == "__main__":
-    # print("Welcome to the Halma Game!")
-    # print("1. Multiplayer")
-    # print("2. Player vs CPU Minimax")
-    # print("3. Player vs CPU Minimax Local Search")
-    # print("4. CPU Minimax vs CPU Minimax Local Search")
-    # choice = int(input("Masukkan pilihan mode permainan yang diinginkan: "))
-    # boardSize = int(input("Pilih ukuran papan N x N dalam input bilangan N: "))
-    # tlimit = int(input("Tentukan time limit untuk setiap permainan! "))
-    # hplayer = 0
-    # if (choice != 1) or (choice != 4):
-    #     hplayer = int(
-    #         input("Tentukan mau pilih Merah (1) atau Hijau (2): "))
+    print("Welcome to the Halma Game!")
+    print("1. Multiplayer")
+    print("2. Player vs CPU Minimax")
+    print("3. Player vs CPU Minimax Local Search")
+    print("4. CPU Minimax vs CPU Minimax Local Search")
+    choice = int(input("Masukkan pilihan mode permainan yang diinginkan: "))
+    boardSize = int(input("Pilih ukuran papan N x N dalam input bilangan N: "))
+    tlimit = int(input("Tentukan time limit untuk setiap permainan! "))
+    hplayer = 0
+    if (choice != 1) or (choice != 4):
+        hplayer = int(
+            input("Tentukan mau pilih Hijau (1) atau Merah (2): "))
 
-    boardSize = 4
-    choice = 1
-    tlimit = 5
-    hplayer = 1
     GM = GameManager(boardSize, choice, tlimit, hplayer)
     GM.startGame()

@@ -317,7 +317,7 @@ def start():
                 if (play_pos.collidepoint(mouse[0], mouse[1])):
                     if txt == '':
                         main(screen, active, board, player_default, '20')
-                    elif active == 2:
+                    elif active == 3:
                         main(screen, active, board, 0, txt)
                     else:
                         main(screen, active, board, player_default, txt)

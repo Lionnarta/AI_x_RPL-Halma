@@ -114,12 +114,11 @@ class GameManager:
     def minimaxMove(self):
         """ Menjalankan bot Minimax pada giliran bot tersebut """
         print("PLAYER " + str(self.currentPlayer.noPlayer) + " MINIMAX TURN!")
-        self.currentPlayer.printAllPion()
         # Minimax Process
         beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
-        minimaxState, _eval = Minimax.minimax(currentState, 3,
+        minimaxState, _eval = Minimax.minimax(currentState, 10,
                                               time.time() + self.tlimit, -math.inf,
                                               math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess
@@ -133,12 +132,11 @@ class GameManager:
     def minimaxLocalSearchMove(self):
         """ Menjalankan bot Minimax pada giliran bot tersebut """
         print("PLAYER " + str(self.currentPlayer.noPlayer) + " MINIMAX LOCAL SEARCH TURN!")
-        self.currentPlayer.printAllPion()
         # Minimax Process
         beforeProcess = time.time()
         currentState = GameState.GameState(self.board, self.currentPlayer,
                                            self.oppositePlayer)
-        minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 3,
+        minimaxState, _eval = Minimax.minimaxLocalSearch(currentState, 10,
                                               time.time() + self.tlimit, -math.inf,
                                               math.inf, self.currentPlayer.noPlayer)
         deltaTime = time.time() - beforeProcess

@@ -194,6 +194,7 @@ def main(screen, active, boardSize, player_default, txt):
                     running = False
                 else:
                     GM.nextTurn()
+                    turn += 1
             # Mode permainan adalah Player vs BOT Minimax Local Search
             elif (active == 2):
                 pygame.display.update()
@@ -205,6 +206,7 @@ def main(screen, active, boardSize, player_default, txt):
                     running = False
                 else:
                     GM.nextTurn()
+                    turn += 1
         
         # Ketika mode permainan adalah BOT Minimax vs BOT Minimax Local Search
         if (active == 3):

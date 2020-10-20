@@ -89,7 +89,6 @@ def minimax(gamestate, depth, timeTotal, alpha, beta, maxEntity):
         # Iterate all pion and its possible moves
         maxGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
         maxValue = -math.inf
-        print("Max Entity Minimax!")
 
         # Iterate all pion index
         for idx in range(len(gamestate.currentPlayer.arrayPion)):
@@ -100,15 +99,9 @@ def minimax(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 newGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
                 newGameState.currentPlayer.movePion(idx, move, newGameState.board)
 
-                # DEBUGGING
-                print(f"=========== Depth = {depth}; PionID = {idx} ===========")
-                newGameState.board.printBoard()
-                
                 recursiveState = GameState.GameState(newGameState.board, newGameState.currentPlayer, newGameState.oppositePlayer)
                 recursiveState.nextTurn()
                 dummyState, utility = minimax(recursiveState, depth-1, timeTotal, alpha, beta, maxEntity)
-
-                print(f"Utility = {utility}")
 
                 # Compare with the old max value
                 if (utility > maxValue):
@@ -118,14 +111,12 @@ def minimax(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 alpha = max(alpha, maxValue)
                 if (beta <= alpha):
                     return maxGameState, maxValue
-        print("Giliran siapakah ini? ", maxGameState.currentPlayer.noPlayer)
         return maxGameState, maxValue
 
     else:
         # Choose the minimum utility of the state
         minGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
         minValue = math.inf
-        print("Min Entity Minimax!")
 
         # Iterate all pion index
         for idx in range(len(gamestate.currentPlayer.arrayPion)):
@@ -136,15 +127,9 @@ def minimax(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 newGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
                 newGameState.currentPlayer.movePion(idx, move, newGameState.board)
 
-                # DEBUGGING
-                print(f"=========== Depth = {depth}; PionID = {idx} ===========")
-                newGameState.board.printBoard()
-
                 recursiveState = GameState.GameState(newGameState.board, newGameState.currentPlayer, newGameState.oppositePlayer)
                 recursiveState.nextTurn()
                 dummyState, utility = minimax(recursiveState, depth-1, timeTotal, alpha, beta, maxEntity)
-
-                print(f"Utility = {utility}")
 
                 # Compare with the old min value
                 if (utility < minValue):
@@ -154,8 +139,7 @@ def minimax(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 beta = min(beta, minValue)
                 if (beta <= alpha):
                     return minGameState, minValue
-
-        print("Giliran siapakah ini? ", minGameState.currentPlayer.noPlayer)        
+    
         return minGameState, minValue
 
 def minimaxLocalSearch(gamestate, depth, timeTotal, alpha, beta, maxEntity):
@@ -180,7 +164,6 @@ def minimaxLocalSearch(gamestate, depth, timeTotal, alpha, beta, maxEntity):
         # Iterate all pion and its possible moves
         maxGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
         maxValue = -math.inf
-        print("Max Entity Minimax Local Search!")
 
         # Iterate all pion index
         for idx in range(len(gamestate.currentPlayer.arrayPion)):
@@ -191,16 +174,10 @@ def minimaxLocalSearch(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 move = getBestMove(all_possible_moves, gamestate)
                 newGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
                 newGameState.currentPlayer.movePion(idx, move, newGameState.board)
-
-                # DEBUGGING
-                print(f"=========== Depth = {depth}; PionID = {idx} ===========")
-                newGameState.board.printBoard()
                 
                 recursiveState = GameState.GameState(newGameState.board, newGameState.currentPlayer, newGameState.oppositePlayer)
                 recursiveState.nextTurn()
                 dummyState, utility = minimaxLocalSearch(recursiveState, depth-1, timeTotal, alpha, beta, maxEntity)
-
-                print(f"Utility = {utility}")
 
                 # Compare with the old max value
                 if (utility > maxValue):
@@ -211,14 +188,12 @@ def minimaxLocalSearch(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 if (beta <= alpha):
                     return maxGameState, maxValue
 
-        print("Giliran siapakah ini? ", maxGameState.currentPlayer.noPlayer)
         return maxGameState, maxValue
 
     else:
         # Choose the minimum utility of the state
         minGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
         minValue = math.inf
-        print("Min Entity Minimax Local Search!")
 
         # Iterate all pion index
         for idx in range(len(gamestate.currentPlayer.arrayPion)):
@@ -230,15 +205,9 @@ def minimaxLocalSearch(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 newGameState = GameState.GameState(gamestate.board, gamestate.currentPlayer, gamestate.oppositePlayer)
                 newGameState.currentPlayer.movePion(idx, move, newGameState.board)
 
-                # DEBUGGING
-                print(f"=========== Depth = {depth}; PionID = {idx} ===========")
-                newGameState.board.printBoard()
-
                 recursiveState = GameState.GameState(newGameState.board, newGameState.currentPlayer, newGameState.oppositePlayer)
                 recursiveState.nextTurn()
                 dummyState, utility = minimaxLocalSearch(recursiveState, depth-1, timeTotal, alpha, beta, maxEntity)
-
-                print(f"Utility = {utility}")
 
                 # Compare with the old min value
                 if (utility < minValue):
@@ -248,6 +217,5 @@ def minimaxLocalSearch(gamestate, depth, timeTotal, alpha, beta, maxEntity):
                 beta = min(beta, minValue)
                 if (beta <= alpha):
                     return minGameState, minValue
-
-        print("Giliran siapakah ini? ", minGameState.currentPlayer.noPlayer)        
+       
         return minGameState, minValue

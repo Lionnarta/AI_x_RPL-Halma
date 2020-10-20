@@ -59,6 +59,19 @@ def update_board(screen, setup, GM):
         rect = image.get_rect()
         screen.blit(image, (setup.get_scale() * item[0][1] + setup.get_x(), setup.get_scale() * item[0][0] - setup.get_y()))
 
+def winMessage(screen, curPlayer):
+    win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
+    if curPlayer == 1:
+        win_img = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "win_message_1.png"))
+        screen.blit(win_img, win_pos)
+        pygame.display.update()
+        time.sleep(3)
+    else:
+        win_img = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "win_message_2.png"))
+        screen.blit(win_img, win_pos)
+        pygame.display.update()
+        time.sleep(3)
+
 
 # Main game screen
 def main(screen, active, boardSize, player_default, txt):
@@ -172,24 +185,48 @@ def main(screen, active, boardSize, player_default, txt):
             # Mode permainan adalah Player vs BOT Minimax
             if (active == 1):
                 pygame.display.update()
-                GM.minimaxMove()
-                GM.nextTurn()
+                terminalState = GM.minimaxMove()
+                if terminalState == True:
+                    print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax win the game!")
+                    win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
+                    winMessage(screen, GM.currentPlayer.noPlayer)
+                    running = False
+                else:
+                    GM.nextTurn()
             # Mode permainan adalah Player vs BOT Minimax Local Search
             elif (active == 2):
                 pygame.display.update()
-                GM.minimaxLocalSearchMove()
-                GM.nextTurn()
+                terminalState = GM.minimaxLocalSearchMove()
+                if terminalState == True:
+                    print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax Local Search win the game!")
+                    win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
+                    winMessage(screen, GM.currentPlayer.noPlayer)
+                    running = False
+                else:
+                    GM.nextTurn()
         
         # Ketika mode permainan adalah BOT Minimax vs BOT Minimax Local Search
         if (active == 3):
             if (GM.currentPlayer.noPlayer == 1):
                 pygame.display.update()
-                GM.minimaxMove()
-                GM.nextTurn()
+                terminalState = GM.minimaxMove()
+                if terminalState == True:
+                    print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax win the game!")
+                    win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
+                    winMessage(screen, GM.currentPlayer.noPlayer)
+                    running = False
+                else:
+                    GM.nextTurn()
             else:
                 pygame.display.update()
-                GM.minimaxLocalSearchMove()
-                GM.nextTurn()
+                terminalState = GM.minimaxLocalSearchMove()
+                if terminalState == True:
+                    print("Player " + str(GM.currentPlayer.noPlayer) + " Minimax Local Search win the game!")
+                    win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
+                    winMessage(screen, GM.currentPlayer.noPlayer)
+                    running = False
+                else:
+                    GM.nextTurn()
 
         # Time
         time_run = math.floor(time.time() - time_start)
@@ -231,21 +268,10 @@ def main(screen, active, boardSize, player_default, txt):
                         update_board(screen, setup, GM)
                         pygame.display.update()
                         if terminalState == True:
-                            print("Player " + str(GM.currentPlayer.noPlayer) +
-                                  " win the game!")
+                            print("Player " + str(GM.currentPlayer.noPlayer) + " win the game!")
                             win_pos = Rect(screen.get_width()/2-150, screen.get_height()/2-90, 300, 180)
-                            if GM.currentPlayer.noPlayer == 1:
-                                win_img = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "win_message_1.png"))
-                                screen.blit(win_img, win_pos)
-                                pygame.display.update()
-                                time.sleep(3)
-                                running = False
-                            else:
-                                win_img = pygame.image.load(os.path.join(os.path.dirname(os.getcwd()), "img", "collection", "win_message_2.png"))
-                                screen.blit(win_img, win_pos)
-                                pygame.display.update()
-                                time.sleep(3)
-                                running = False
+                            winMessage(screen, GM.currentPlayer.noPlayer)
+                            running = False
                         time_start = time.time()
                         GM.nextTurn()
 

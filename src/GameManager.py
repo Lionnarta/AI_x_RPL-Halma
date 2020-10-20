@@ -125,6 +125,10 @@ class GameManager:
         deltaTime = time.time() - beforeProcess
         print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
+        terminalState = False
+        if (self.board.checkTerminalState(self.currentPlayer.noPlayer)):
+            terminalState = True
+        return terminalState
     
     def minimaxLocalSearchMove(self):
         """ Menjalankan bot Minimax pada giliran bot tersebut """
@@ -140,6 +144,10 @@ class GameManager:
         deltaTime = time.time() - beforeProcess
         print(f"Execution time = {deltaTime} seconds")
         self.assignState(minimaxState)
+        terminalState = False
+        if (self.board.checkTerminalState(self.currentPlayer.noPlayer)):
+            terminalState = True
+        return terminalState
 
     def isValidClick(self, position):
         """ Mengembalikan true apabila user mengclick pion yang bukan miliknya """
